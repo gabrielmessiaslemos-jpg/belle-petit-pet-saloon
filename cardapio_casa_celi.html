@@ -600,9 +600,26 @@
         </div>
 
         <!-- Total -->
-        <div class="bg-celiVerde/5 border border-celiVerde/20 rounded-2xl p-4 flex items-center justify-between">
-          <span class="font-mono text-sm font-bold text-celiVerde uppercase tracking-widest">Total do Pedido</span>
-          <span id="modal-cart-total" class="text-3xl font-oswald text-celiVerde">R$ 0,00</span>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-sm text-celiMarrom/60 px-1">
+            <span class="font-mono uppercase tracking-wide">Subtotal</span>
+            <span id="modal-cart-subtotal" class="font-oswald">R$ 0,00</span>
+          </div>
+          <div id="pix-discount-row" class="flex items-center justify-between text-sm px-1 hidden">
+            <span class="font-mono uppercase tracking-wide text-celiVerde flex items-center gap-2">
+              <span class="bg-celiVerde text-white text-[0.55rem] font-bold px-1.5 py-0.5 rounded">3% OFF</span>
+              Desconto PIX
+            </span>
+            <span id="modal-cart-discount" class="font-oswald text-celiVerde">- R$ 0,00</span>
+          </div>
+          <div id="pix-hint-row" class="flex items-center justify-between text-xs px-1">
+            <span class="text-celiMarrom/50 font-mono italic">Pague com PIX e economize</span>
+            <span id="modal-pix-savings" class="font-oswald text-celiTerracota font-bold">R$ 0,00</span>
+          </div>
+          <div class="bg-celiVerde/5 border border-celiVerde/20 rounded-2xl p-4 flex items-center justify-between mt-1">
+            <span class="font-mono text-sm font-bold text-celiVerde uppercase tracking-widest">Total do Pedido</span>
+            <span id="modal-cart-total" class="text-3xl font-oswald text-celiVerde">R$ 0,00</span>
+          </div>
         </div>
 
       </div>
@@ -717,10 +734,39 @@
     function atualizarUI() {
       const { total, itemCount } = calcTotal();
 
+      const paymentEl = document.getElementById('payment-method');
+      const isPix     = paymentEl && paymentEl.value === 'Pix';
+      const discount  = total * 0.03;
+      const finalTotal = isPix ? total - discount : total;
+      const fmt = v => `R$ ${v.toFixed(2).replace('.', ',')}`;
+
       // Dock
       document.getElementById('floating-cart-badge').textContent = itemCount;
-      document.getElementById('floating-cart-total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-      document.getElementById('modal-cart-total').textContent    = `R$ ${total.toFixed(2).replace('.', ',')}`;
+      document.getElementById('floating-cart-total').textContent = fmt(finalTotal);
+
+      // Subtotal, desconto e total no modal
+      document.getElementById('modal-cart-subtotal').textContent = fmt(total);
+      document.getElementById('modal-cart-total').textContent    = fmt(finalTotal);
+
+      const discountRow  = document.getElementById('pix-discount-row');
+      const hintRow      = document.getElementById('pix-hint-row');
+      const savingsEl    = document.getElementById('modal-pix-savings');
+      const discountEl   = document.getElementById('modal-cart-discount');
+
+      if (total > 0) {
+        if (isPix) {
+          discountRow.classList.remove('hidden');
+          hintRow.classList.add('hidden');
+          discountEl.textContent = `- ${fmt(discount)}`;
+        } else {
+          discountRow.classList.add('hidden');
+          hintRow.classList.remove('hidden');
+          savingsEl.textContent = fmt(discount);
+        }
+      } else {
+        discountRow.classList.add('hidden');
+        hintRow.classList.add('hidden');
+      }
 
       // Resumo no modal
       const summary = document.getElementById('cart-items-summary');
@@ -817,6 +863,7 @@
     // ── WhatsApp ──
     function enviarParaWhatsApp() {
       const { total, itemCount } = calcTotal();
+      // total = subtotal bruto; desconto PIX calculado adiante
       if (itemCount === 0) {
         alert('Selecione pelo menos um prato antes de enviar!');
         return;
@@ -855,8 +902,20 @@
         msg += `  R$ ${(kit.qty * kit.price).toFixed(2).replace('.', ',')}\n\n`;
       });
 
+      const isPix      = pagamento === 'Pix';
+      const discount   = total * 0.03;
+      const finalTotal = isPix ? total - discount : total;
+      const fmt        = v => `R$ ${v.toFixed(2).replace('.', ',')}`;
+
       msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-      msg += `💰 *TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n`;
+      if (isPix) {
+        msg += `Subtotal: ${fmt(total)}\n`;
+        msg += `🏷️ Desconto 3% OFF (PIX): - ${fmt(discount)}\n`;
+        msg += `💰 *TOTAL COM DESCONTO: ${fmt(finalTotal)}*\n`;
+      } else {
+        msg += `💰 *TOTAL: ${fmt(total)}*\n`;
+        msg += `💡 _Pague com PIX e economize ${fmt(discount)} (3% OFF)_\n`;
+      }
 
       if (obs) msg += `\n📝 *Observações:* ${obs}\n`;
 
@@ -868,6 +927,12 @@
 
     // Init
     atualizarUI();
+
+    // Recalcula total/desconto ao trocar forma de pagamento
+    document.addEventListener('DOMContentLoaded', () => {
+      const payEl = document.getElementById('payment-method');
+      if (payEl) payEl.addEventListener('change', atualizarUI);
+    });
   </script>
 
 </body>
