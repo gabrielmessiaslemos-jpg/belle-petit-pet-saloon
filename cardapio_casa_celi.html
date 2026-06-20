@@ -101,34 +101,58 @@
   <!-- ══════════════════════════════════════════
        FILTRO DE CATEGORIAS
        ══════════════════════════════════════════ -->
-  <div class="sticky top-0 z-40 bg-celiFundo/90 backdrop-blur-md border-b border-celiOliva/10 py-4 px-6 premium-shadow">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4 overflow-x-auto custom-scrollbar">
+  <div class="sticky top-0 z-40 bg-celiFundo/95 backdrop-blur-md border-b border-celiOliva/10 premium-shadow">
+    <!-- Linha 1: categorias -->
+    <div class="max-w-6xl mx-auto px-4 pt-3 pb-2 overflow-x-auto custom-scrollbar">
       <div class="flex gap-2 min-w-max">
-        <button onclick="filtrarPratos('todos')" id="btn-todos" class="category-btn active px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-celiVerde text-celiFundo border border-celiVerde transition-all">
-          Menu Completo
-        </button>
-        <button onclick="filtrarPratos('tradicional')" id="btn-tradicional" class="category-btn px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde transition-all">
-          Linha Tradicional
-        </button>
-        <button onclick="filtrarPratos('premium')" id="btn-premium" class="category-btn px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde transition-all">
-          Linha Premium
-        </button>
-        <button onclick="filtrarPratos('caldos')" id="btn-caldos" class="category-btn px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde transition-all">
-          Caldos Artesanais
-        </button>
-        <button onclick="filtrarPratos('kits')" id="btn-kits" class="category-btn px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde transition-all">
-          Kits Promocionais (3% OFF)
-        </button>
-      </div>
 
-      <div class="flex items-center gap-2 min-w-max bg-white border border-celiOliva/20 px-3 py-1.5 rounded-full">
+        <button onclick="filtrarPratos('todos')" id="btn-todos"
+          class="category-btn px-4 py-2 rounded-full text-[0.7rem] font-mono uppercase tracking-widest transition-all bg-celiVerde text-celiFundo border border-celiVerde">
+          ☰ Menu Completo
+        </button>
+
+        <button onclick="filtrarPratos('tradicional')" id="btn-tradicional"
+          class="category-btn px-4 py-2 rounded-full text-[0.7rem] font-mono uppercase tracking-widest transition-all bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde">
+          🍱 Tradicionais
+        </button>
+
+        <button onclick="filtrarPratos('premium')" id="btn-premium"
+          class="category-btn px-4 py-2 rounded-full text-[0.7rem] font-mono uppercase tracking-widest transition-all bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde">
+          ⭐ Premium
+        </button>
+
+        <button onclick="filtrarPratos('massas')" id="btn-massas"
+          class="category-btn px-4 py-2 rounded-full text-[0.7rem] font-mono uppercase tracking-widest transition-all bg-white text-celiTerracota border border-celiTerracota/30 hover:border-celiTerracota">
+          🍝 Massas
+        </button>
+
+        <button onclick="filtrarPratos('caldos')" id="btn-caldos"
+          class="category-btn px-4 py-2 rounded-full text-[0.7rem] font-mono uppercase tracking-widest transition-all bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde">
+          🍲 Caldos
+        </button>
+
+        <button onclick="filtrarPratos('kits')" id="btn-kits"
+          class="category-btn px-4 py-2 rounded-full text-[0.7rem] font-mono uppercase tracking-widest transition-all bg-celiDourado/10 text-celiMarrom border border-celiDourado/30 hover:border-celiDourado">
+          🎁 Kits 3% OFF
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Linha 2: tamanho + contador total -->
+    <div class="max-w-6xl mx-auto px-4 pb-2 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2 bg-white border border-celiOliva/20 px-3 py-1.5 rounded-full">
         <span class="text-[0.65rem] font-mono uppercase text-celiMarrom/60">Tamanho:</span>
-        <select id="global-size-select" onchange="atualizarPrecosPorTamanho(this.value)" class="text-xs font-mono font-bold text-celiVerde bg-transparent focus:outline-none cursor-pointer">
+        <select id="global-size-select" onchange="atualizarPrecosPorTamanho(this.value)"
+          class="text-xs font-mono font-bold text-celiVerde bg-transparent focus:outline-none cursor-pointer">
           <option value="300">300g — R$ 18,00</option>
           <option value="400" selected>400g — R$ 20,00</option>
           <option value="500">500g — R$ 22,00</option>
         </select>
       </div>
+      <span id="nav-item-count" class="text-[0.65rem] font-mono text-celiMarrom/50 hidden">
+        <span id="nav-qty-total">0</span> marmita(s) · máx. 40
+      </span>
     </div>
   </div>
 
@@ -160,102 +184,123 @@
         </div>
 
         <!-- Cards de Pratos -->
-        <div class="lg:col-span-7 space-y-4">
+        <div class="lg:col-span-7 space-y-3">
 
-          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <span class="bg-celiDourado/10 text-celiDourado text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">★ Alta Aceitação</span>
-                <span class="text-xs font-mono text-celiTerracota font-bold">Tradicional</span>
-              </div>
-              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Frango Desfiado ao Creme de Milho</h4>
-              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Creme de milho cremoso feito em casa, arroz branco soltinho e brócolis fresco no vapor.</p>
+          <!-- Frango Desfiado -->
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-4 premium-shadow flex items-center gap-4 hover:border-celiVerde/40 hover:shadow-lg transition-all group">
+            <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 relative">
+              <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Frango Desfiado">
             </div>
-            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
-              <span id="price-desfiado" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
-              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+            <div class="flex-1 min-w-0">
+              <span class="bg-celiDourado/10 text-celiDourado text-[0.58rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">★ Alta Aceitação</span>
+              <h4 class="font-serif text-xl font-bold text-celiMarrom mt-0.5 leading-tight">Frango Desfiado ao Creme de Milho</h4>
+              <p class="text-[0.68rem] text-celiMarrom/60 font-sans leading-relaxed mt-0.5">Creme de milho caseiro, arroz soltinho e brócolis no vapor.</p>
+            </div>
+            <div class="flex flex-col items-end gap-2 flex-shrink-0">
+              <span id="price-desfiado" class="text-xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-0.5">
                 <button onclick="changeQty('desfiado', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
-                <span id="qty-desfiado" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <span id="qty-desfiado" class="w-9 text-center font-mono font-bold text-sm">0</span>
                 <button onclick="changeQty('desfiado', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
-            <div class="space-y-1">
-              <span class="bg-celiOliva/10 text-celiVerde text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✔ Equilibrado</span>
-              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Frango em Cubos Acebolado</h4>
-              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Cubos macios de frango grelhados com cebola dourada, arroz, feijão caseiro e mix de legumes.</p>
+          <!-- Frango Acebolado -->
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-4 premium-shadow flex items-center gap-4 hover:border-celiVerde/40 hover:shadow-lg transition-all group">
+            <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+              <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Frango Acebolado">
             </div>
-            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
-              <span id="price-acebolado" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
-              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+            <div class="flex-1 min-w-0">
+              <span class="bg-celiOliva/10 text-celiVerde text-[0.58rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✔ Equilibrado</span>
+              <h4 class="font-serif text-xl font-bold text-celiMarrom mt-0.5 leading-tight">Frango em Cubos Acebolado</h4>
+              <p class="text-[0.68rem] text-celiMarrom/60 font-sans leading-relaxed mt-0.5">Cubos de frango grelhados com cebola dourada, arroz e feijão.</p>
+            </div>
+            <div class="flex flex-col items-end gap-2 flex-shrink-0">
+              <span id="price-acebolado" class="text-xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-0.5">
                 <button onclick="changeQty('acebolado', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
-                <span id="qty-acebolado" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <span id="qty-acebolado" class="w-9 text-center font-mono font-bold text-sm">0</span>
                 <button onclick="changeQty('acebolado', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
-            <div class="space-y-1">
-              <span class="bg-celiTerracota/10 text-celiTerracota text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">🔥 Clássico</span>
-              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Almôndegas ao Molho Pomodoro</h4>
-              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Bolinhos bovinos artesanais regados com molho de tomate rústico, arroz, feijão e legumes grelhados.</p>
+          <!-- Almôndegas -->
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-4 premium-shadow flex items-center gap-4 hover:border-celiTerracota/40 hover:shadow-lg transition-all group">
+            <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+              <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Almôndegas">
             </div>
-            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
-              <span id="price-almondegas" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
-              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+            <div class="flex-1 min-w-0">
+              <span class="bg-celiTerracota/10 text-celiTerracota text-[0.58rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">Clássico</span>
+              <h4 class="font-serif text-xl font-bold text-celiMarrom mt-0.5 leading-tight">Almôndegas ao Molho Pomodoro</h4>
+              <p class="text-[0.68rem] text-celiMarrom/60 font-sans leading-relaxed mt-0.5">Bolinhos bovinos artesanais, molho de tomate rústico e legumes.</p>
+            </div>
+            <div class="flex flex-col items-end gap-2 flex-shrink-0">
+              <span id="price-almondegas" class="text-xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-0.5">
                 <button onclick="changeQty('almondegas', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
-                <span id="qty-almondegas" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <span id="qty-almondegas" class="w-9 text-center font-mono font-bold text-sm">0</span>
                 <button onclick="changeQty('almondegas', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
-            <div class="space-y-1">
-              <span class="bg-celiOliva/10 text-celiVerde text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✔ Sucesso de Vendas</span>
-              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Frango Xadrez da Casa</h4>
-              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Mix oriental autêntico de frango suculento, legumes frescos crocantes, arroz e vagem grelhada.</p>
+          <!-- Frango Xadrez -->
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-4 premium-shadow flex items-center gap-4 hover:border-celiVerde/40 hover:shadow-lg transition-all group">
+            <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+              <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Frango Xadrez">
             </div>
-            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
-              <span id="price-xadrez" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
-              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+            <div class="flex-1 min-w-0">
+              <span class="bg-celiOliva/10 text-celiVerde text-[0.58rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✔ Sucesso de Vendas</span>
+              <h4 class="font-serif text-xl font-bold text-celiMarrom mt-0.5 leading-tight">Frango Xadrez da Casa</h4>
+              <p class="text-[0.68rem] text-celiMarrom/60 font-sans leading-relaxed mt-0.5">Mix oriental de frango, legumes crocantes, arroz e vagem.</p>
+            </div>
+            <div class="flex flex-col items-end gap-2 flex-shrink-0">
+              <span id="price-xadrez" class="text-xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-0.5">
                 <button onclick="changeQty('xadrez', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
-                <span id="qty-xadrez" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <span id="qty-xadrez" class="w-9 text-center font-mono font-bold text-sm">0</span>
                 <button onclick="changeQty('xadrez', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
-            <div class="space-y-1">
-              <span class="bg-celiDourado/10 text-celiDourado text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✦ Toque Especial</span>
-              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Filé de Frango ao Molho de Mel</h4>
-              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Filé macio ao molho de mel e mostarda com toque cítrico, acompanhado de arroz, feijão e abobrinha grelhada.</p>
+          <!-- Filé de Frango ao Molho de Mel -->
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-4 premium-shadow flex items-center gap-4 hover:border-celiDourado/40 hover:shadow-lg transition-all group">
+            <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+              <img src="https://images.unsplash.com/photo-1604908177453-7462950a6a3b?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Filé Mel">
             </div>
-            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
-              <span id="price-mel" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
-              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+            <div class="flex-1 min-w-0">
+              <span class="bg-celiDourado/10 text-celiDourado text-[0.58rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✦ Toque Especial</span>
+              <h4 class="font-serif text-xl font-bold text-celiMarrom mt-0.5 leading-tight">Filé de Frango ao Molho de Mel</h4>
+              <p class="text-[0.68rem] text-celiMarrom/60 font-sans leading-relaxed mt-0.5">Molho de mel e mostarda com toque cítrico, arroz e abobrinha.</p>
+            </div>
+            <div class="flex flex-col items-end gap-2 flex-shrink-0">
+              <span id="price-mel" class="text-xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-0.5">
                 <button onclick="changeQty('mel', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
-                <span id="qty-mel" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <span id="qty-mel" class="w-9 text-center font-mono font-bold text-sm">0</span>
                 <button onclick="changeQty('mel', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
               </div>
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
-            <div class="space-y-1">
-              <span class="bg-blue-50 text-blue-600 text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">◈ Leve</span>
-              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Filé de Merluza</h4>
-              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Filé de merluza temperado com ervas finas e grelhado, acompanhado de arroz branco soltinho e couve-flor gratinada.</p>
+          <!-- Filé de Merluza -->
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-4 premium-shadow flex items-center gap-4 hover:border-blue-200 hover:shadow-lg transition-all group">
+            <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+              <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Filé Merluza">
             </div>
-            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
-              <span id="price-merluza" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
-              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+            <div class="flex-1 min-w-0">
+              <span class="bg-blue-50 text-blue-600 text-[0.58rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">◈ Leve</span>
+              <h4 class="font-serif text-xl font-bold text-celiMarrom mt-0.5 leading-tight">Filé de Merluza</h4>
+              <p class="text-[0.68rem] text-celiMarrom/60 font-sans leading-relaxed mt-0.5">Filé grelhado com ervas finas, arroz soltinho e couve-flor gratinada.</p>
+            </div>
+            <div class="flex flex-col items-end gap-2 flex-shrink-0">
+              <span id="price-merluza" class="text-xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-0.5">
                 <button onclick="changeQty('merluza', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
-                <span id="qty-merluza" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <span id="qty-merluza" class="w-9 text-center font-mono font-bold text-sm">0</span>
                 <button onclick="changeQty('merluza', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
               </div>
             </div>
@@ -681,13 +726,21 @@
     }
 
     // ── Quantidade ──
+    const MAX_QTY = 40;
+
     function changeQty(id, delta) {
-      cart[id] = Math.max(0, (cart[id] || 0) + delta);
+      const current = cart[id] || 0;
+      cart[id] = Math.min(MAX_QTY, Math.max(0, current + delta));
       const el = document.getElementById(`qty-${id}`);
       if (el) {
         el.textContent = cart[id];
         el.classList.add('qty-bounce');
         setTimeout(() => el.classList.remove('qty-bounce'), 200);
+        // Feedback visual ao atingir limite
+        if (cart[id] === MAX_QTY) {
+          el.style.color = '#B05216';
+          setTimeout(() => { el.style.color = ''; }, 1000);
+        }
       }
       atualizarUI();
     }
@@ -740,9 +793,16 @@
       const finalTotal = isPix ? total - discount : total;
       const fmt = v => `R$ ${v.toFixed(2).replace('.', ',')}`;
 
-      // Dock
+      // Dock + contador navbar
       document.getElementById('floating-cart-badge').textContent = itemCount;
       document.getElementById('floating-cart-total').textContent = fmt(finalTotal);
+      const navCount = document.getElementById('nav-item-count');
+      const navQty   = document.getElementById('nav-qty-total');
+      if (navCount && navQty) {
+        navQty.textContent = itemCount;
+        navCount.classList.toggle('hidden', itemCount === 0);
+        navCount.style.color = itemCount >= MAX_QTY ? '#B05216' : '';
+      }
 
       // Subtotal, desconto e total no modal
       document.getElementById('modal-cart-subtotal').textContent = fmt(total);
@@ -838,25 +898,51 @@
       document.getElementById('address-container').style.display = value === 'delivery' ? 'block' : 'none';
     }
 
+    // Mapeamento de categorias especiais para seções existentes
+    const MASSAS_IDS = ['nhoque', 'lasanha', 'macarrao', 'panquecas'];
+
     // ── Filtro de Categorias ──
     function filtrarPratos(cat) {
+      // Reset todos os botões
       document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.classList.remove('bg-celiVerde', 'text-celiFundo', 'border-celiVerde');
-        btn.classList.add('bg-white', 'text-celiVerde', 'border-celiOliva/20');
+        btn.className = btn.className
+          .replace(/bg-celiVerde|text-celiFundo|border-celiVerde/g, '')
+          .trim();
+        btn.classList.add('bg-white', 'border-celiOliva/20');
       });
+
       const active = document.getElementById(`btn-${cat}`);
       if (active) {
+        active.classList.remove('bg-white', 'border-celiOliva/20');
         active.classList.add('bg-celiVerde', 'text-celiFundo', 'border-celiVerde');
-        active.classList.remove('bg-white', 'text-celiVerde', 'border-celiOliva/20');
       }
 
-      document.querySelectorAll('.menu-section').forEach(sec => {
-        sec.style.display = (cat === 'todos' || sec.id === `section-${cat}`) ? 'block' : 'none';
-      });
-
-      if (cat !== 'todos') {
-        const target = document.getElementById(`section-${cat}`);
+      if (cat === 'massas') {
+        // Mostra seção premium mas oculta cards que não são massas
+        document.querySelectorAll('.menu-section').forEach(sec => {
+          sec.style.display = sec.id === 'section-premium' ? 'block' : 'none';
+        });
+        // Dentro da seção premium, filtra apenas cards de massa
+        document.querySelectorAll('#section-premium [id^="qty-"]').forEach(el => {
+          const key = el.id.replace('qty-', '');
+          const card = el.closest('.bg-white.rounded-3xl');
+          if (card) card.style.display = MASSAS_IDS.includes(key) ? 'flex' : 'none';
+        });
+        const target = document.getElementById('section-premium');
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        // Restaura visibilidade de todos os cards premium
+        document.querySelectorAll('#section-premium [id^="qty-"]').forEach(el => {
+          const card = el.closest('.bg-white.rounded-3xl');
+          if (card) card.style.display = '';
+        });
+        document.querySelectorAll('.menu-section').forEach(sec => {
+          sec.style.display = (cat === 'todos' || sec.id === `section-${cat}`) ? 'block' : 'none';
+        });
+        if (cat !== 'todos') {
+          const target = document.getElementById(`section-${cat}`);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
     }
 
