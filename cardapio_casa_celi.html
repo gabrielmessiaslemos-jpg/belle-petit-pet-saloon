@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Casa Celi — Congelados Artesanais</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            celiVerde: '#1E4B26',
+            celiOliva: '#8F9C68',
+            celiTerracota: '#B05216',
+            celiMarrom: '#4F2915',
+            celiDourado: '#B89A4A',
+            celiFundo: '#FAF8F3',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Instrument Serif', 'serif'],
+            oswald: ['Oswald', 'sans-serif'],
+            mono: ['Space Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .premium-shadow {
+      box-shadow: 0 20px 40px -15px rgba(79, 41, 21, 0.15), 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    .emboss-effect {
+      box-shadow: inset 1px 1px 2px rgba(255,255,255,0.6), inset -1px -1px 3px rgba(79, 41, 21, 0.2);
+    }
+    .custom-scrollbar::-webkit-scrollbar { height: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #8F9C68; border-radius: 10px; }
+    .diagonal-slice-orange {
+      background: linear-gradient(135deg, #FAF8F3 40%, #B05216 100%);
+    }
+    button, input, select { -webkit-tap-highlight-color: transparent; }
+    #checkout-modal { display: none; }
+    #checkout-modal.show { display: flex; }
+    .cart-item-row { animation: slideIn 0.2s ease; }
+    @keyframes slideIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+    .qty-bounce { animation: bounce 0.15s ease; }
+    @keyframes bounce { 0%,100% { transform:scale(1); } 50% { transform:scale(1.18); } }
+  </style>
+</head>
+<body class="bg-celiFundo text-celiMarrom font-sans antialiased selection:bg-celiVerde selection:text-white pb-32">
+
+  <!-- ══════════════════════════════════════════
+       HERO HEADER & LOGO
+       ══════════════════════════════════════════ -->
+  <header class="relative overflow-hidden pt-12 pb-16 px-6 diagonal-slice-orange border-b border-celiOliva/10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+
+      <div class="space-y-6 max-w-xl text-center md:text-left order-2 md:order-1">
+        <span class="inline-block bg-celiVerde text-celiFundo text-xs font-mono uppercase tracking-[0.25em] px-4 py-2 rounded-full emboss-effect">
+          100% Artesanal &amp; Sem Conservantes
+        </span>
+        <h1 class="font-serif text-6xl md:text-8xl leading-[0.9] text-celiVerde italic">
+          O sabor da <br><span class="not-italic font-bold text-celiMarrom">cozinha afetiva.</span>
+        </h1>
+        <p class="text-sm md:text-base text-celiMarrom/80 leading-relaxed font-mono tracking-wide max-w-md">
+          Marmitas congeladas preparadas hoje para trazer facilidade, sabor e saúde para o seu amanhã.
+        </p>
+        <div class="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
+          <span class="text-xs bg-celiOliva/10 border border-celiOliva/20 text-celiVerde font-mono px-3 py-1.5 rounded-md">★ Pronto em 5 Min</span>
+          <span class="text-xs bg-celiOliva/10 border border-celiOliva/20 text-celiVerde font-mono px-3 py-1.5 rounded-md">★ Nutrição Perfeita</span>
+          <span class="text-xs bg-celiOliva/10 border border-celiOliva/20 text-celiVerde font-mono px-3 py-1.5 rounded-md">★ Prático &amp; Fit</span>
+        </div>
+      </div>
+
+      <div class="order-1 md:order-2 flex justify-center">
+        <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-celiVerde border-4 border-celiDourado premium-shadow flex flex-col items-center justify-center text-center p-6 relative select-none transform hover:scale-105 transition-transform duration-300">
+          <div class="absolute inset-0 rounded-full emboss-effect"></div>
+          <div class="w-12 h-1 bg-celiDourado mb-4 rounded-full"></div>
+          <h2 class="font-serif text-4xl md:text-5xl text-celiFundo font-light tracking-tight leading-none">
+            Casa Celi
+          </h2>
+          <span class="text-[0.6rem] md:text-xs font-mono text-celiOliva uppercase tracking-[0.4em] mt-2">
+            Congelados de Família
+          </span>
+          <div class="w-12 h-1 bg-celiDourado mt-4 rounded-full"></div>
+          <p class="text-[0.6rem] font-mono text-celiFundo/50 uppercase tracking-widest mt-3 leading-tight">
+            Comida feita hoje<br>para facilitar o seu amanhã.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════
+       FILTRO DE CATEGORIAS
+       ══════════════════════════════════════════ -->
+  <div class="sticky top-0 z-40 bg-celiFundo/90 backdrop-blur-md border-b border-celiOliva/10 py-4 px-6 premium-shadow">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4 overflow-x-auto custom-scrollbar">
+      <div class="flex gap-2 min-w-max">
+        <button onclick="filtrarPratos('todos')" id="btn-todos" class="category-btn active px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-celiVerde text-celiFundo border border-celiVerde transition-all">
+          Menu Completo
+        </button>
+        <button onclick="filtrarPratos('tradicional')" id="btn-tradicional" class="category-btn px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde transition-all">
+          Linha Tradicional
+        </button>
+        <button onclick="filtrarPratos('premium')" id="btn-premium" class="category-btn px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde transition-all">
+          Linha Premium
+        </button>
+        <button onclick="filtrarPratos('caldos')" id="btn-caldos" class="category-btn px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde transition-all">
+          Caldos Artesanais
+        </button>
+        <button onclick="filtrarPratos('kits')" id="btn-kits" class="category-btn px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-widest bg-white text-celiVerde border border-celiOliva/20 hover:border-celiVerde transition-all">
+          Kits Promocionais (3% OFF)
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2 min-w-max bg-white border border-celiOliva/20 px-3 py-1.5 rounded-full">
+        <span class="text-[0.65rem] font-mono uppercase text-celiMarrom/60">Tamanho:</span>
+        <select id="global-size-select" onchange="atualizarPrecosPorTamanho(this.value)" class="text-xs font-mono font-bold text-celiVerde bg-transparent focus:outline-none cursor-pointer">
+          <option value="300">300g — R$ 18,00</option>
+          <option value="400" selected>400g — R$ 20,00</option>
+          <option value="500">500g — R$ 22,00</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CONTEÚDO DO CARDÁPIO
+       ══════════════════════════════════════════ -->
+  <main class="max-w-6xl mx-auto px-6 py-12 space-y-16">
+
+    <!-- LINHA TRADICIONAL -->
+    <section id="section-tradicional" class="menu-section space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-celiOliva/20 pb-4">
+        <div>
+          <span class="text-xs font-mono text-celiTerracota uppercase tracking-[0.25em]">Combinações Perfeitas para o Dia a Dia</span>
+          <h3 class="font-serif text-5xl font-bold text-celiVerde mt-1">Linha Tradicional</h3>
+        </div>
+        <p class="text-xs font-mono text-celiMarrom/60 mt-2 md:mt-0">Refeições equilibradas feitas com insumos frescos locais.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Foto Lateral -->
+        <div class="lg:col-span-5 h-[350px] lg:h-[650px] rounded-3xl overflow-hidden relative premium-shadow group">
+          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800" alt="Marmitas Caseiras" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-celiVerde via-transparent to-transparent opacity-60"></div>
+          <div class="absolute bottom-8 left-8 right-8 text-white space-y-2">
+            <span class="inline-block bg-celiTerracota text-white text-[0.65rem] font-mono uppercase tracking-widest px-3 py-1 rounded">Sabor Caseiro</span>
+            <h4 class="font-serif text-3xl font-light italic">Comer bem nunca foi tão fácil.</h4>
+            <p class="text-[0.7rem] font-mono opacity-80">Refeições seladas e seguras prontas em minutos.</p>
+          </div>
+        </div>
+
+        <!-- Cards de Pratos -->
+        <div class="lg:col-span-7 space-y-4">
+
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="bg-celiDourado/10 text-celiDourado text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">★ Alta Aceitação</span>
+                <span class="text-xs font-mono text-celiTerracota font-bold">Tradicional</span>
+              </div>
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Frango Desfiado ao Creme de Milho</h4>
+              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Creme de milho cremoso feito em casa, arroz branco soltinho e brócolis fresco no vapor.</p>
+            </div>
+            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
+              <span id="price-desfiado" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('desfiado', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
+                <span id="qty-desfiado" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('desfiado', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
+            <div class="space-y-1">
+              <span class="bg-celiOliva/10 text-celiVerde text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✔ Equilibrado</span>
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Frango em Cubos Acebolado</h4>
+              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Cubos macios de frango grelhados com cebola dourada, arroz, feijão caseiro e mix de legumes.</p>
+            </div>
+            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
+              <span id="price-acebolado" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('acebolado', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
+                <span id="qty-acebolado" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('acebolado', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
+            <div class="space-y-1">
+              <span class="bg-celiTerracota/10 text-celiTerracota text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">🔥 Clássico</span>
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Almôndegas ao Molho Pomodoro</h4>
+              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Bolinhos bovinos artesanais regados com molho de tomate rústico, arroz, feijão e legumes grelhados.</p>
+            </div>
+            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
+              <span id="price-almondegas" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('almondegas', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
+                <span id="qty-almondegas" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('almondegas', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
+            <div class="space-y-1">
+              <span class="bg-celiOliva/10 text-celiVerde text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✔ Sucesso de Vendas</span>
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Frango Xadrez da Casa</h4>
+              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Mix oriental autêntico de frango suculento, legumes frescos crocantes, arroz e vagem grelhada.</p>
+            </div>
+            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
+              <span id="price-xadrez" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('xadrez', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
+                <span id="qty-xadrez" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('xadrez', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- LINHA PREMIUM -->
+    <section id="section-premium" class="menu-section space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-celiOliva/20 pb-4">
+        <div>
+          <span class="text-xs font-mono text-celiTerracota uppercase tracking-[0.25em]">Experiências Especiais (400g)</span>
+          <h3 class="font-serif text-5xl font-bold text-celiVerde mt-1">Linha Premium</h3>
+        </div>
+        <p class="text-xs font-mono text-celiMarrom/60 mt-2 md:mt-0">Receitas requintadas com o toque de chef da Casa Celi.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-3xl overflow-hidden premium-shadow border border-celiOliva/10 flex flex-col hover:border-celiDourado transition-all">
+          <div class="h-48 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1632778149955-e80f8ceca7e8?auto=format&fit=crop&q=80&w=800" alt="Parmegiana" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-celiTerracota text-white text-[0.6rem] font-mono uppercase tracking-widest px-3 py-1 rounded">Campeão de Vendas</span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-1">
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Parmegiana com Crosta</h4>
+              <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Filé empanado suculento coberto com queijo derretido borbulhante e molho artesanal de tomates frescos.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
+              <span class="text-2xl font-oswald text-celiVerde">R$ 28,50</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('parmegiana', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
+                <span id="qty-parmegiana" class="w-8 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('parmegiana', 1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden premium-shadow border border-celiOliva/10 flex flex-col hover:border-celiDourado transition-all">
+          <div class="h-48 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&q=80&w=800" alt="Nhoque Bolonhesa" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-celiDourado text-celiMarrom text-[0.6rem] font-mono uppercase tracking-widest px-3 py-1 rounded">Massa Fresca</span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-1">
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Nhoque à Bolonhesa</h4>
+              <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Massa de batata ultra leve cortada à mão, banhada em ragu denso de carne bovina moída com ervas finas aromáticas.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
+              <span class="text-2xl font-oswald text-celiVerde">R$ 33,50</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('nhoque', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
+                <span id="qty-nhoque" class="w-8 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('nhoque', 1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden premium-shadow border border-celiOliva/10 flex flex-col hover:border-celiDourado transition-all">
+          <div class="h-48 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?auto=format&fit=crop&q=80&w=800" alt="Lasanha" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-celiVerde text-celiFundo text-[0.6rem] font-mono uppercase tracking-widest px-3 py-1 rounded">Receita Secreta</span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-1">
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Lasanha Saborosa</h4>
+              <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Massa de grano duro em camadas generosas com recheio de carne perfeitamente apurada e cobertura de queijo parmesão gratinado.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
+              <span class="text-2xl font-oswald text-celiVerde">R$ 26,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('lasanha', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
+                <span id="qty-lasanha" class="w-8 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('lasanha', 1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CALDOS & SOPAS -->
+    <section id="section-caldos" class="menu-section space-y-8">
+      <div class="bg-white p-8 rounded-3xl premium-shadow border border-celiOliva/10 flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div class="space-y-3 max-w-md">
+          <span class="text-xs font-mono text-celiTerracota uppercase tracking-[0.25em]">Noites de Conforto (500ml)</span>
+          <h3 class="font-serif text-4xl font-bold text-celiVerde">Caldos Artesanais</h3>
+          <p class="text-xs text-celiMarrom/70 leading-relaxed">Opções quentinhas e reconfortantes ideais para completar o seu pedido diário. Consulte sabores do dia.</p>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="text-center">
+            <span class="block text-xs font-mono text-celiMarrom/50">Valor Unitário</span>
+            <span class="text-3xl font-oswald text-celiTerracota">R$ 21,90</span>
+          </div>
+          <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1.5 shadow-inner">
+            <button onclick="changeQty('caldo', -1)" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all">−</button>
+            <span id="qty-caldo" class="w-12 text-center font-mono font-bold text-base">0</span>
+            <button onclick="changeQty('caldo', 1)" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all">+</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KITS E COMBOS -->
+    <section id="section-kits" class="menu-section space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-celiOliva/20 pb-4">
+        <div>
+          <span class="text-xs font-mono text-celiTerracota uppercase tracking-[0.25em]">Combos Semanais e Mensais</span>
+          <h3 class="font-serif text-5xl font-bold text-celiVerde mt-1">Kits Especiais</h3>
+        </div>
+        <p class="text-xs font-mono text-celiMarrom/60 mt-2 md:mt-0">Planeje sua rotina com até 3% OFF em todas as marmitas do kit.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-2xl border border-celiOliva/10 p-6 premium-shadow flex flex-col justify-between hover:border-celiTerracota transition-all">
+          <div class="space-y-2">
+            <span class="inline-block bg-celiTerracota/10 text-celiTerracota text-[0.6rem] font-mono uppercase tracking-widest px-2.5 py-1 rounded">Semanal</span>
+            <h4 class="font-serif text-2xl font-bold text-celiMarrom">Kit Semana Leve</h4>
+            <p class="text-xs text-celiMarrom/60 font-mono">10 Marmitas Personalizadas</p>
+            <p class="text-xs text-celiMarrom/70 pt-2 leading-relaxed">Perfeito para quem quer focar na alimentação prática de segunda a sexta com ingredientes nobres.</p>
+          </div>
+          <div class="pt-6 border-t border-celiFundo flex items-center justify-between mt-6">
+            <div>
+              <span class="block text-[0.65rem] font-mono text-celiMarrom/50 line-through">De R$ 180,00</span>
+              <span class="text-2xl font-oswald text-celiVerde">R$ 174,60</span>
+            </div>
+            <button onclick="selecionarKit('semana', 'Kit Semana Leve (10 marmitas)', 174.60)" class="bg-celiVerde text-celiFundo text-xs font-mono px-4 py-2.5 rounded-full hover:bg-celiTerracota transition-all">
+              Adicionar Kit
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-celiOliva/10 p-6 premium-shadow flex flex-col justify-between hover:border-celiTerracota transition-all relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-celiDourado text-celiMarrom text-[0.55rem] font-mono uppercase font-bold tracking-widest px-3 py-1 rounded-bl">Mais Vendido</div>
+          <div class="space-y-2">
+            <span class="inline-block bg-celiDourado/15 text-celiDourado text-[0.6rem] font-mono uppercase tracking-widest px-2.5 py-1 rounded">Quinzenal</span>
+            <h4 class="font-serif text-2xl font-bold text-celiMarrom">Kit Família Prática</h4>
+            <p class="text-xs text-celiMarrom/60 font-mono">20 Marmitas Personalizadas</p>
+            <p class="text-xs text-celiMarrom/70 pt-2 leading-relaxed">Abasteça o seu congelador para almoços e jantares de duas pessoas sem qualquer preocupação diária.</p>
+          </div>
+          <div class="pt-6 border-t border-celiFundo flex items-center justify-between mt-6">
+            <div>
+              <span class="block text-[0.65rem] font-mono text-celiMarrom/50 line-through">De R$ 360,00</span>
+              <span class="text-2xl font-oswald text-celiVerde">R$ 349,20</span>
+            </div>
+            <button onclick="selecionarKit('familia', 'Kit Família Prática (20 marmitas)', 349.20)" class="bg-celiVerde text-celiFundo text-xs font-mono px-4 py-2.5 rounded-full hover:bg-celiTerracota transition-all">
+              Adicionar Kit
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-celiOliva/10 p-6 premium-shadow flex flex-col justify-between hover:border-celiTerracota transition-all">
+          <div class="space-y-2">
+            <span class="inline-block bg-celiVerde/10 text-celiVerde text-[0.6rem] font-mono uppercase tracking-widest px-2.5 py-1 rounded">Mensal</span>
+            <h4 class="font-serif text-2xl font-bold text-celiMarrom">Kit Mês Organizado</h4>
+            <p class="text-xs text-celiMarrom/60 font-mono">30 Marmitas Personalizadas</p>
+            <p class="text-xs text-celiMarrom/70 pt-2 leading-relaxed">A solução definitiva para o mês inteiro. Máximo custo-benefício com pratos diversificados.</p>
+          </div>
+          <div class="pt-6 border-t border-celiFundo flex items-center justify-between mt-6">
+            <div>
+              <span class="block text-[0.65rem] font-mono text-celiMarrom/50 line-through">De R$ 540,00</span>
+              <span class="text-2xl font-oswald text-celiVerde">R$ 523,80</span>
+            </div>
+            <button onclick="selecionarKit('mes', 'Kit Mês Organizado (30 marmitas)', 523.80)" class="bg-celiVerde text-celiFundo text-xs font-mono px-4 py-2.5 rounded-full hover:bg-celiTerracota transition-all">
+              Adicionar Kit
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════
+       DOCK FLUTUANTE (SACOLA)
+       ══════════════════════════════════════════ -->
+  <div class="fixed bottom-0 left-0 right-0 z-50 bg-celiVerde text-celiFundo border-t border-celiOliva/20 shadow-2xl">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <div class="flex items-center gap-4">
+        <div class="relative bg-celiFundo/10 p-3 rounded-full emboss-effect">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-celiDourado" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span id="floating-cart-badge" class="absolute -top-1 -right-1 bg-celiTerracota text-white font-mono text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </div>
+        <div>
+          <span class="block text-[0.65rem] font-mono text-celiOliva uppercase tracking-widest">Total da Sacola</span>
+          <span id="floating-cart-total" class="text-2xl font-oswald text-celiDourado">R$ 0,00</span>
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="toggleCartModal(true)" class="bg-celiFundo/15 border border-celiFundo/10 text-celiFundo font-mono text-xs px-5 py-3 rounded-full hover:bg-celiFundo/20 transition-all uppercase tracking-wider hidden sm:block">
+          Ver Detalhes
+        </button>
+        <button onclick="toggleCartModal(true)" class="bg-celiTerracota text-white font-mono text-xs px-6 py-3 rounded-full hover:bg-celiDourado hover:text-celiMarrom transition-all uppercase tracking-wider font-bold">
+          Enviar para o WhatsApp
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MODAL DE CHECKOUT
+       ══════════════════════════════════════════ -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-celiFundo rounded-3xl w-full max-w-lg overflow-hidden premium-shadow border border-celiOliva/20 flex flex-col max-h-[90vh]">
+
+      <!-- Topo -->
+      <div class="bg-celiVerde text-celiFundo p-6 flex justify-between items-center border-b border-celiOliva/10">
+        <div>
+          <h3 class="font-serif text-3xl">Seu Pedido</h3>
+          <p class="text-xs font-mono text-celiOliva uppercase tracking-widest">Confirme e envie pelo WhatsApp</p>
+        </div>
+        <button onclick="toggleCartModal(false)" class="text-celiFundo/60 hover:text-white text-2xl font-bold font-mono leading-none">✕</button>
+      </div>
+
+      <!-- Corpo -->
+      <div class="p-6 overflow-y-auto space-y-6 flex-1">
+
+        <!-- Alerta de Combo -->
+        <div id="combo-alert" class="bg-celiDourado/10 border border-celiDourado/30 rounded-2xl p-4 text-xs space-y-1 hidden">
+          <p class="font-bold text-celiMarrom">🔥 Combo Promocional Disponível!</p>
+          <p class="text-celiMarrom/80" id="combo-alert-msg">Com 10 marmitas você tem 3% OFF — considere adicionar um Kit!</p>
+        </div>
+
+        <!-- Dados do Cliente -->
+        <div class="space-y-4">
+          <h4 class="font-mono text-xs font-bold uppercase text-celiTerracota border-b border-celiOliva/10 pb-2">Seus Dados</h4>
+          <div>
+            <label class="block text-xs font-mono uppercase text-celiMarrom/70 mb-1">Seu Nome *</label>
+            <input type="text" id="client-name" placeholder="Ex: Maria Silva" class="w-full bg-white border border-celiOliva/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-celiVerde font-sans">
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase text-celiMarrom/70 mb-1">Como deseja receber? *</label>
+            <select id="delivery-option" onchange="toggleAddressField(this.value)" class="w-full bg-white border border-celiOliva/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-celiVerde font-sans">
+              <option value="delivery">Entrega em Domicílio (Consulte Taxa)</option>
+              <option value="pickup">Retirada na Casa Celi</option>
+            </select>
+          </div>
+          <div id="address-container">
+            <label class="block text-xs font-mono uppercase text-celiMarrom/70 mb-1">Endereço de Entrega *</label>
+            <input type="text" id="client-address" placeholder="Rua, número, bairro" class="w-full bg-white border border-celiOliva/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-celiVerde font-sans">
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase text-celiMarrom/70 mb-1">Forma de Pagamento *</label>
+            <select id="payment-method" class="w-full bg-white border border-celiOliva/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-celiVerde font-sans">
+              <option value="Pix">PIX</option>
+              <option value="Cartão de Crédito">Cartão de Crédito</option>
+              <option value="Cartão de Débito">Cartão de Débito</option>
+              <option value="Dinheiro">Dinheiro (Levar troco)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase text-celiMarrom/70 mb-1">Observações</label>
+            <textarea id="client-obs" placeholder="Alguma restrição alimentar, preferência de tempero..." rows="2" class="w-full bg-white border border-celiOliva/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-celiVerde font-sans resize-none"></textarea>
+          </div>
+        </div>
+
+        <!-- Resumo do Pedido -->
+        <div class="space-y-3">
+          <h4 class="font-mono text-xs font-bold uppercase text-celiTerracota border-b border-celiOliva/10 pb-2">Itens Selecionados</h4>
+          <div id="cart-items-summary" class="space-y-2 text-sm">
+            <p class="text-celiMarrom/50 font-mono text-xs italic">Nenhum prato selecionado ainda.</p>
+          </div>
+        </div>
+
+        <!-- Total -->
+        <div class="bg-celiVerde/5 border border-celiVerde/20 rounded-2xl p-4 flex items-center justify-between">
+          <span class="font-mono text-sm font-bold text-celiVerde uppercase tracking-widest">Total do Pedido</span>
+          <span id="modal-cart-total" class="text-3xl font-oswald text-celiVerde">R$ 0,00</span>
+        </div>
+
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="p-6 border-t border-celiOliva/10 space-y-3 bg-white">
+        <button onclick="enviarParaWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#1aab55] text-white font-mono font-bold text-sm py-4 rounded-2xl transition-all flex items-center justify-center gap-3 uppercase tracking-wider">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.525 5.848L.057 23.571l5.862-1.538A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.801 9.801 0 01-4.99-1.365l-.358-.213-3.48.913.929-3.394-.234-.371A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+          Confirmar e Enviar Pedido
+        </button>
+        <p class="text-[0.65rem] font-mono text-celiMarrom/40 text-center">Você será direcionado ao WhatsApp com o pedido completo preenchido.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       JAVASCRIPT
+       ══════════════════════════════════════════ -->
+  <script>
+    // ── Catálogo de Produtos ──
+    const CATALOG = {
+      desfiado:   { name: 'Frango Desfiado ao Creme de Milho', basePrice: 20.00, category: 'tradicional' },
+      acebolado:  { name: 'Frango em Cubos Acebolado',         basePrice: 20.00, category: 'tradicional' },
+      almondegas: { name: 'Almôndegas ao Molho Pomodoro',      basePrice: 20.00, category: 'tradicional' },
+      xadrez:     { name: 'Frango Xadrez da Casa',             basePrice: 20.00, category: 'tradicional' },
+      parmegiana: { name: 'Parmegiana com Crosta',             basePrice: 28.50, category: 'premium',     fixed: true },
+      nhoque:     { name: 'Nhoque à Bolonhesa',                basePrice: 33.50, category: 'premium',     fixed: true },
+      lasanha:    { name: 'Lasanha Saborosa',                  basePrice: 26.00, category: 'premium',     fixed: true },
+      caldo:      { name: 'Caldo Artesanal (500ml)',           basePrice: 21.90, category: 'caldos',      fixed: true },
+    };
+
+    const PRICE_MAP = { '300': 18.00, '400': 20.00, '500': 22.00 };
+
+    // ── Estado ──
+    const cart   = {};
+    const kits   = {};
+    let   currentSize = '400';
+
+    Object.keys(CATALOG).forEach(k => { cart[k] = 0; });
+
+    // ── Preços por Tamanho ──
+    function atualizarPrecosPorTamanho(size) {
+      currentSize = size;
+      const price = PRICE_MAP[size];
+      Object.entries(CATALOG).forEach(([id, item]) => {
+        if (!item.fixed) {
+          item.basePrice = price;
+          const el = document.getElementById(`price-${id}`);
+          if (el) el.textContent = `R$ ${price.toFixed(2).replace('.', ',')}`;
+        }
+      });
+      atualizarUI();
+    }
+
+    // ── Quantidade ──
+    function changeQty(id, delta) {
+      cart[id] = Math.max(0, (cart[id] || 0) + delta);
+      const el = document.getElementById(`qty-${id}`);
+      if (el) {
+        el.textContent = cart[id];
+        el.classList.add('qty-bounce');
+        setTimeout(() => el.classList.remove('qty-bounce'), 200);
+      }
+      atualizarUI();
+    }
+
+    // ── Kits ──
+    function selecionarKit(id, name, price) {
+      if (!kits[id]) {
+        kits[id] = { name, price, qty: 1 };
+      } else {
+        kits[id].qty++;
+      }
+      atualizarUI();
+
+      // Feedback visual no botão
+      const btn = event.currentTarget;
+      const orig = btn.textContent;
+      btn.textContent = '✓ Adicionado!';
+      btn.classList.add('bg-celiDourado', '!text-celiMarrom');
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('bg-celiDourado', '!text-celiMarrom');
+      }, 1500);
+    }
+
+    // ── Cálculo do Total ──
+    function calcTotal() {
+      let total = 0;
+      let itemCount = 0;
+
+      Object.entries(CATALOG).forEach(([id, item]) => {
+        const qty = cart[id] || 0;
+        if (qty > 0) { total += qty * item.basePrice; itemCount += qty; }
+      });
+
+      Object.values(kits).forEach(kit => {
+        total += kit.qty * kit.price;
+        itemCount += kit.qty;
+      });
+
+      return { total, itemCount };
+    }
+
+    // ── Atualiza UI ──
+    function atualizarUI() {
+      const { total, itemCount } = calcTotal();
+
+      // Dock
+      document.getElementById('floating-cart-badge').textContent = itemCount;
+      document.getElementById('floating-cart-total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+      document.getElementById('modal-cart-total').textContent    = `R$ ${total.toFixed(2).replace('.', ',')}`;
+
+      // Resumo no modal
+      const summary = document.getElementById('cart-items-summary');
+      const rows = [];
+
+      Object.entries(CATALOG).forEach(([id, item]) => {
+        const qty = cart[id] || 0;
+        if (qty > 0) {
+          const sub = (qty * item.basePrice).toFixed(2).replace('.', ',');
+          rows.push(`
+            <div class="cart-item-row flex justify-between items-start py-2 border-b border-celiOliva/10 last:border-0">
+              <div>
+                <p class="font-sans text-celiMarrom text-xs font-semibold">${item.name}</p>
+                <p class="font-mono text-celiMarrom/50 text-[0.65rem]">${qty}x R$ ${item.basePrice.toFixed(2).replace('.', ',')}</p>
+              </div>
+              <span class="font-oswald text-celiVerde text-sm ml-4 whitespace-nowrap">R$ ${sub}</span>
+            </div>`);
+        }
+      });
+
+      Object.values(kits).forEach(kit => {
+        const sub = (kit.qty * kit.price).toFixed(2).replace('.', ',');
+        rows.push(`
+          <div class="cart-item-row flex justify-between items-start py-2 border-b border-celiOliva/10 last:border-0">
+            <div>
+              <p class="font-sans text-celiMarrom text-xs font-semibold">${kit.name}</p>
+              <p class="font-mono text-celiTerracota text-[0.65rem]">3% OFF aplicado ✓</p>
+            </div>
+            <span class="font-oswald text-celiVerde text-sm ml-4 whitespace-nowrap">R$ ${sub}</span>
+          </div>`);
+      });
+
+      summary.innerHTML = rows.length
+        ? rows.join('')
+        : '<p class="text-celiMarrom/50 font-mono text-xs italic">Nenhum prato selecionado ainda.</p>';
+
+      // Alerta de combo
+      const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+      const comboAlert = document.getElementById('combo-alert');
+      if (totalQty >= 5 && totalQty < 10) {
+        comboAlert.classList.remove('hidden');
+        document.getElementById('combo-alert-msg').textContent = `Faltam apenas ${10 - totalQty} marmitas para você ganhar 3% OFF com o Kit Semana Leve!`;
+      } else if (totalQty >= 10) {
+        comboAlert.classList.remove('hidden');
+        document.getElementById('combo-alert-msg').textContent = 'Você pode migrar para um dos nossos Kits e economizar ainda mais!';
+      } else {
+        comboAlert.classList.add('hidden');
+      }
+    }
+
+    // ── Modal ──
+    function toggleCartModal(show) {
+      const modal = document.getElementById('checkout-modal');
+      if (show) {
+        modal.classList.add('show');
+        atualizarUI();
+      } else {
+        modal.classList.remove('show');
+      }
+    }
+
+    // Fecha ao clicar no backdrop
+    document.getElementById('checkout-modal').addEventListener('click', function(e) {
+      if (e.target === this) toggleCartModal(false);
+    });
+
+    // ── Endereço ──
+    function toggleAddressField(value) {
+      document.getElementById('address-container').style.display = value === 'delivery' ? 'block' : 'none';
+    }
+
+    // ── Filtro de Categorias ──
+    function filtrarPratos(cat) {
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('bg-celiVerde', 'text-celiFundo', 'border-celiVerde');
+        btn.classList.add('bg-white', 'text-celiVerde', 'border-celiOliva/20');
+      });
+      const active = document.getElementById(`btn-${cat}`);
+      if (active) {
+        active.classList.add('bg-celiVerde', 'text-celiFundo', 'border-celiVerde');
+        active.classList.remove('bg-white', 'text-celiVerde', 'border-celiOliva/20');
+      }
+
+      document.querySelectorAll('.menu-section').forEach(sec => {
+        sec.style.display = (cat === 'todos' || sec.id === `section-${cat}`) ? 'block' : 'none';
+      });
+
+      if (cat !== 'todos') {
+        const target = document.getElementById(`section-${cat}`);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // ── WhatsApp ──
+    function enviarParaWhatsApp() {
+      const { total, itemCount } = calcTotal();
+      if (itemCount === 0) {
+        alert('Selecione pelo menos um prato antes de enviar!');
+        return;
+      }
+
+      const nome      = document.getElementById('client-name').value.trim() || 'Cliente';
+      const entrega   = document.getElementById('delivery-option').value;
+      const endereco  = document.getElementById('client-address').value.trim();
+      const pagamento = document.getElementById('payment-method').value;
+      const obs       = document.getElementById('client-obs').value.trim();
+
+      if (entrega === 'delivery' && !endereco) {
+        alert('Por favor, informe o endereço de entrega.');
+        document.getElementById('client-address').focus();
+        return;
+      }
+
+      let msg = `🍽️ *PEDIDO — Casa Celi*\n`;
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `👤 *Cliente:* ${nome}\n`;
+      msg += `📦 *Entrega:* ${entrega === 'delivery' ? `Entrega — ${endereco}` : 'Retirada na Casa Celi'}\n`;
+      msg += `💳 *Pagamento:* ${pagamento}\n`;
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `🛒 *Itens do Pedido:*\n\n`;
+
+      Object.entries(CATALOG).forEach(([id, item]) => {
+        const qty = cart[id] || 0;
+        if (qty > 0) {
+          msg += `• ${qty}x ${item.name}\n`;
+          msg += `  R$ ${(qty * item.basePrice).toFixed(2).replace('.', ',')}\n\n`;
+        }
+      });
+
+      Object.values(kits).forEach(kit => {
+        msg += `• ${kit.qty}x ${kit.name} ⭐ 3% OFF\n`;
+        msg += `  R$ ${(kit.qty * kit.price).toFixed(2).replace('.', ',')}\n\n`;
+      });
+
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `💰 *TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n`;
+
+      if (obs) msg += `\n📝 *Observações:* ${obs}\n`;
+
+      msg += `\n_Pedido enviado pelo Cardápio Digital Casa Celi_ 🌿`;
+
+      const waUrl = `https://wa.me/5515996779560?text=${encodeURIComponent(msg)}`;
+      window.open(waUrl, '_blank');
+    }
+
+    // Init
+    atualizarUI();
+  </script>
+
+</body>
+</html>
