@@ -229,6 +229,38 @@
             </div>
           </div>
 
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
+            <div class="space-y-1">
+              <span class="bg-celiDourado/10 text-celiDourado text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">✦ Toque Especial</span>
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Filé de Frango ao Molho de Mel</h4>
+              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Filé macio ao molho de mel e mostarda com toque cítrico, acompanhado de arroz, feijão e abobrinha grelhada.</p>
+            </div>
+            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
+              <span id="price-mel" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('mel', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
+                <span id="qty-mel" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('mel', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-celiOliva/10 p-5 premium-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-celiVerde/30 transition-all">
+            <div class="space-y-1">
+              <span class="bg-blue-50 text-blue-600 text-[0.6rem] font-mono uppercase tracking-wider px-2 py-0.5 rounded">◈ Leve</span>
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Filé de Merluza</h4>
+              <p class="text-xs text-celiMarrom/70 font-sans max-w-md leading-relaxed">Filé de merluza temperado com ervas finas e grelhado, acompanhado de arroz branco soltinho e couve-flor gratinada.</p>
+            </div>
+            <div class="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-4 sm:pt-0 border-t sm:border-none border-celiFundo">
+              <span id="price-merluza" class="text-2xl font-oswald text-celiVerde">R$ 20,00</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('merluza', -1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">−</button>
+                <span id="qty-merluza" class="w-10 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('merluza', 1)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold hover:bg-celiVerde hover:text-white transition-all text-sm">+</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -256,7 +288,7 @@
               <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Filé empanado suculento coberto com queijo derretido borbulhante e molho artesanal de tomates frescos.</p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
-              <span class="text-2xl font-oswald text-celiVerde">R$ 28,50</span>
+              <span id="price-parmegiana" class="text-2xl font-oswald text-celiVerde">R$ 28,50</span>
               <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
                 <button onclick="changeQty('parmegiana', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
                 <span id="qty-parmegiana" class="w-8 text-center font-mono font-bold text-sm">0</span>
@@ -277,7 +309,7 @@
               <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Massa de batata ultra leve cortada à mão, banhada em ragu denso de carne bovina moída com ervas finas aromáticas.</p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
-              <span class="text-2xl font-oswald text-celiVerde">R$ 33,50</span>
+              <span id="price-nhoque" class="text-2xl font-oswald text-celiVerde">R$ 33,50</span>
               <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
                 <button onclick="changeQty('nhoque', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
                 <span id="qty-nhoque" class="w-8 text-center font-mono font-bold text-sm">0</span>
@@ -298,11 +330,77 @@
               <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Massa de grano duro em camadas generosas com recheio de carne perfeitamente apurada e cobertura de queijo parmesão gratinado.</p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
-              <span class="text-2xl font-oswald text-celiVerde">R$ 26,00</span>
+              <span id="price-lasanha" class="text-2xl font-oswald text-celiVerde">R$ 26,00</span>
               <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
                 <button onclick="changeQty('lasanha', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
                 <span id="qty-lasanha" class="w-8 text-center font-mono font-bold text-sm">0</span>
                 <button onclick="changeQty('lasanha', 1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Escondidinho Caprichado -->
+        <div class="bg-white rounded-3xl overflow-hidden premium-shadow border border-celiOliva/10 flex flex-col hover:border-celiDourado transition-all">
+          <div class="h-48 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&q=80&w=800" alt="Escondidinho" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-celiTerracota text-white text-[0.6rem] font-mono uppercase tracking-widest px-3 py-1 rounded">Especial da Casa</span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-1">
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Escondidinho Caprichado</h4>
+              <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Camadas generosas de purê cremoso cobrindo carne desfiada temperada com ervas, gratinado com queijo dourado.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
+              <span id="price-escondidinho" class="text-2xl font-oswald text-celiVerde">R$ 24,50</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('escondidinho', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
+                <span id="qty-escondidinho" class="w-8 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('escondidinho', 1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panquecas Caseiras -->
+        <div class="bg-white rounded-3xl overflow-hidden premium-shadow border border-celiOliva/10 flex flex-col hover:border-celiDourado transition-all">
+          <div class="h-48 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&q=80&w=800" alt="Panquecas" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-celiDourado text-celiMarrom text-[0.6rem] font-mono uppercase tracking-widest px-3 py-1 rounded">Feito à Mão</span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-1">
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Panquecas Caseiras</h4>
+              <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Massa delicada recheada com frango cremoso ou carne moída, coberta de molho de tomate artesanal e queijo derretido.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
+              <span id="price-panquecas" class="text-2xl font-oswald text-celiVerde">R$ 23,50</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('panquecas', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
+                <span id="qty-panquecas" class="w-8 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('panquecas', 1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Macarrões da Casa -->
+        <div class="bg-white rounded-3xl overflow-hidden premium-shadow border border-celiOliva/10 flex flex-col hover:border-celiDourado transition-all">
+          <div class="h-48 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?auto=format&fit=crop&q=80&w=800" alt="Macarrão" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-celiVerde text-celiFundo text-[0.6rem] font-mono uppercase tracking-widest px-3 py-1 rounded">Clássico Celi</span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-1">
+              <h4 class="font-serif text-2xl font-bold text-celiMarrom">Macarrões da Casa</h4>
+              <p class="text-xs text-celiMarrom/70 leading-relaxed font-sans">Macarrão cozido no ponto perfeito com molho encorpado da casa — disponível ao sugo, bolonhesa ou ao alho e óleo.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-celiFundo">
+              <span id="price-macarrao" class="text-2xl font-oswald text-celiVerde">R$ 24,90</span>
+              <div class="flex items-center bg-celiFundo border border-celiOliva/20 rounded-full p-1">
+                <button onclick="changeQty('macarrao', -1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">−</button>
+                <span id="qty-macarrao" class="w-8 text-center font-mono font-bold text-sm">0</span>
+                <button onclick="changeQty('macarrao', 1)" class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-celiVerde font-bold text-sm hover:bg-celiVerde hover:text-white transition-all">+</button>
               </div>
             </div>
           </div>
@@ -527,14 +625,19 @@
   <script>
     // ── Catálogo de Produtos ──
     const CATALOG = {
-      desfiado:   { name: 'Frango Desfiado ao Creme de Milho', basePrice: 20.00, category: 'tradicional' },
-      acebolado:  { name: 'Frango em Cubos Acebolado',         basePrice: 20.00, category: 'tradicional' },
-      almondegas: { name: 'Almôndegas ao Molho Pomodoro',      basePrice: 20.00, category: 'tradicional' },
-      xadrez:     { name: 'Frango Xadrez da Casa',             basePrice: 20.00, category: 'tradicional' },
-      parmegiana: { name: 'Parmegiana com Crosta',             basePrice: 28.50, category: 'premium',     fixed: true },
-      nhoque:     { name: 'Nhoque à Bolonhesa',                basePrice: 33.50, category: 'premium',     fixed: true },
-      lasanha:    { name: 'Lasanha Saborosa',                  basePrice: 26.00, category: 'premium',     fixed: true },
-      caldo:      { name: 'Caldo Artesanal (500ml)',           basePrice: 21.90, category: 'caldos',      fixed: true },
+      desfiado:     { name: 'Frango Desfiado ao Creme de Milho',   basePrice: 20.00, category: 'tradicional' },
+      acebolado:    { name: 'Frango em Cubos Acebolado',            basePrice: 20.00, category: 'tradicional' },
+      almondegas:   { name: 'Almôndegas ao Molho Pomodoro',         basePrice: 20.00, category: 'tradicional' },
+      xadrez:       { name: 'Frango Xadrez da Casa',                basePrice: 20.00, category: 'tradicional' },
+      mel:          { name: 'Filé de Frango ao Molho de Mel',       basePrice: 20.00, category: 'tradicional' },
+      merluza:      { name: 'Filé de Merluza',                      basePrice: 20.00, category: 'tradicional' },
+      parmegiana:   { name: 'Parmegiana com Crosta',                basePrice: 28.50, category: 'premium',     fixed: true },
+      nhoque:       { name: 'Nhoque à Bolonhesa',                   basePrice: 33.50, category: 'premium',     fixed: true },
+      lasanha:      { name: 'Lasanha Saborosa',                     basePrice: 26.00, category: 'premium',     fixed: true },
+      escondidinho: { name: 'Escondidinho Caprichado',              basePrice: 24.50, category: 'premium',     fixed: true },
+      panquecas:    { name: 'Panquecas Caseiras',                   basePrice: 23.50, category: 'premium',     fixed: true },
+      macarrao:     { name: 'Macarrões da Casa',                    basePrice: 24.90, category: 'premium',     fixed: true },
+      caldo:        { name: 'Caldo Artesanal (500ml)',              basePrice: 21.90, category: 'caldos',      fixed: true },
     };
 
     const PRICE_MAP = { '300': 18.00, '400': 20.00, '500': 22.00 };
