@@ -549,63 +549,103 @@
   </main>
 
   <!-- ══════════════════════════════════════════
-       DOCK FLUTUANTE (SACOLA)
+       DOCK FLUTUANTE — KITS
        ══════════════════════════════════════════ -->
-  <div class="fixed bottom-0 left-0 right-0 z-50 bg-celiVerde text-celiFundo border-t border-celiOliva/20 shadow-2xl">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+  <div id="kit-dock" class="fixed bottom-0 left-0 right-0 z-50 shadow-2xl">
 
-      <div class="flex items-center gap-4">
-        <div class="relative bg-celiFundo/10 p-3 rounded-full emboss-effect">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-celiDourado" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-          </svg>
-          <span id="floating-cart-badge" class="absolute -top-1 -right-1 bg-celiTerracota text-white font-mono text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+    <!-- Barra de progresso do kit atual -->
+    <div class="bg-celiMarrom text-celiFundo border-t border-celiOliva/30">
+      <div class="max-w-6xl mx-auto px-4 py-2 flex items-center gap-3">
+        <span class="font-mono text-[0.6rem] uppercase tracking-widest text-celiOliva whitespace-nowrap shrink-0">Kit Atual</span>
+        <div class="flex-1 bg-celiFundo/10 rounded-full h-2 overflow-hidden">
+          <div id="kit-progress-bar" class="h-full bg-celiDourado rounded-full transition-all duration-300" style="width:0%"></div>
         </div>
-        <div>
-          <span class="block text-[0.65rem] font-mono text-celiOliva uppercase tracking-widest">Total da Sacola</span>
-          <span id="floating-cart-total" class="text-2xl font-oswald text-celiDourado">R$ 0,00</span>
-        </div>
-      </div>
-
-      <div class="flex gap-2">
-        <button onclick="toggleCartModal(true)" class="bg-celiFundo/15 border border-celiFundo/10 text-celiFundo font-mono text-xs px-5 py-3 rounded-full hover:bg-celiFundo/20 transition-all uppercase tracking-wider hidden sm:block">
-          Ver Detalhes
-        </button>
-        <button onclick="toggleCartModal(true)" class="bg-celiTerracota text-white font-mono text-xs px-6 py-3 rounded-full hover:bg-celiDourado hover:text-celiMarrom transition-all uppercase tracking-wider font-bold">
-          Enviar para o WhatsApp
+        <span id="kit-progress-label" class="font-mono text-xs text-celiDourado font-bold whitespace-nowrap shrink-0">0 / 50</span>
+        <button onclick="fecharKit()" id="btn-fechar-kit"
+          class="shrink-0 bg-celiDourado text-celiMarrom font-mono font-bold text-[0.65rem] px-4 py-1.5 rounded-full uppercase tracking-wider transition-all hover:bg-celiFundo hover:text-celiVerde disabled:opacity-40 disabled:cursor-not-allowed"
+          disabled>
+          Fechar Kit →
         </button>
       </div>
-
     </div>
+
+    <!-- Totais e ações -->
+    <div class="bg-celiVerde text-celiFundo">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="relative bg-celiFundo/10 p-2.5 rounded-full shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-celiDourado" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8l1 12h12L19 8"/>
+            </svg>
+            <span id="dock-kit-badge" class="absolute -top-1 -right-1 bg-celiTerracota text-white font-mono text-[0.6rem] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+          </div>
+          <div class="min-w-0">
+            <span id="dock-kits-label" class="block text-[0.6rem] font-mono text-celiOliva uppercase tracking-widest truncate">0 kits · 0 marmitas</span>
+            <span id="dock-total" class="text-xl font-oswald text-celiDourado">R$ 0,00</span>
+          </div>
+        </div>
+        <div class="flex gap-2 shrink-0">
+          <button onclick="abrirModal()" class="hidden sm:block bg-celiFundo/15 border border-celiFundo/20 text-celiFundo font-mono text-[0.65rem] px-4 py-2.5 rounded-full hover:bg-celiFundo/25 transition-all uppercase tracking-wider">
+            Ver Pedido
+          </button>
+          <button onclick="abrirModal()" class="bg-celiTerracota text-white font-mono text-[0.65rem] px-5 py-2.5 rounded-full hover:bg-celiDourado hover:text-celiMarrom transition-all uppercase tracking-wider font-bold">
+            Enviar WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ══════════════════════════════════════════
-       MODAL DE CHECKOUT
+       MODAL DE PEDIDO
        ══════════════════════════════════════════ -->
-  <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-celiFundo rounded-3xl w-full max-w-lg overflow-hidden premium-shadow border border-celiOliva/20 flex flex-col max-h-[90vh]">
+  <div id="checkout-modal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-celiFundo rounded-3xl w-full max-w-lg overflow-hidden premium-shadow border border-celiOliva/20 flex flex-col max-h-[92vh]">
 
       <!-- Topo -->
-      <div class="bg-celiVerde text-celiFundo p-6 flex justify-between items-center border-b border-celiOliva/10">
+      <div class="bg-celiVerde text-celiFundo px-6 py-5 flex justify-between items-center border-b border-celiOliva/10 shrink-0">
         <div>
-          <h3 class="font-serif text-3xl">Seu Pedido</h3>
-          <p class="text-xs font-mono text-celiOliva uppercase tracking-widest">Confirme e envie pelo WhatsApp</p>
+          <h3 class="font-serif text-2xl leading-tight">Meu Pedido</h3>
+          <p id="modal-header-sub" class="text-[0.65rem] font-mono text-celiOliva uppercase tracking-widest">0 kits · 0 marmitas</p>
         </div>
-        <button onclick="toggleCartModal(false)" class="text-celiFundo/60 hover:text-white text-2xl font-bold font-mono leading-none">✕</button>
+        <button onclick="fecharModal()" class="text-celiFundo/60 hover:text-white text-2xl font-bold font-mono leading-none">✕</button>
       </div>
 
-      <!-- Corpo -->
-      <div class="p-6 overflow-y-auto space-y-6 flex-1">
+      <!-- Corpo scrollável -->
+      <div class="overflow-y-auto flex-1 p-5 space-y-5">
 
-        <!-- Alerta de Combo -->
-        <div id="combo-alert" class="bg-celiDourado/10 border border-celiDourado/30 rounded-2xl p-4 text-xs space-y-1 hidden">
-          <p class="font-bold text-celiMarrom">🔥 Combo Promocional Disponível!</p>
-          <p class="text-celiMarrom/80" id="combo-alert-msg">Com 10 marmitas você tem 3% OFF — considere adicionar um Kit!</p>
+        <!-- Kits do Pedido -->
+        <div>
+          <h4 class="font-mono text-[0.65rem] font-bold uppercase text-celiTerracota border-b border-celiOliva/10 pb-2 mb-3 flex items-center gap-2">
+            <span>📦 Kits do Pedido</span>
+            <span id="kits-count-badge" class="bg-celiTerracota text-white text-[0.55rem] font-bold px-2 py-0.5 rounded-full">0</span>
+          </h4>
+
+          <!-- Kits fechados -->
+          <div id="closed-kits-container" class="space-y-3">
+            <p id="no-kits-msg" class="text-celiMarrom/50 font-mono text-xs italic">Nenhum kit fechado ainda. Adicione marmitas e clique em "Fechar Kit".</p>
+          </div>
+
+          <!-- Preview do kit aberto -->
+          <div id="current-kit-preview" class="hidden mt-3 bg-celiVerde/5 border border-celiVerde/20 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-[0.65rem] font-bold text-celiVerde uppercase tracking-wider">Kit em andamento</span>
+              <button onclick="fecharKit()" class="bg-celiVerde text-celiFundo font-mono text-[0.6rem] font-bold px-3 py-1 rounded-full uppercase tracking-wider hover:bg-celiMarrom transition-all">
+                Fechar Este Kit →
+              </button>
+            </div>
+            <div id="current-kit-items" class="text-xs space-y-1"></div>
+            <div class="mt-2 pt-2 border-t border-celiVerde/10 flex justify-between">
+              <span class="font-mono text-[0.65rem] text-celiMarrom/60 uppercase">Subtotal parcial</span>
+              <span id="current-kit-subtotal" class="font-oswald text-sm text-celiVerde">R$ 0,00</span>
+            </div>
+          </div>
         </div>
 
         <!-- Dados do Cliente -->
-        <div class="space-y-4">
-          <h4 class="font-mono text-xs font-bold uppercase text-celiTerracota border-b border-celiOliva/10 pb-2">Seus Dados</h4>
+        <div class="space-y-3">
+          <h4 class="font-mono text-[0.65rem] font-bold uppercase text-celiTerracota border-b border-celiOliva/10 pb-2">Seus Dados</h4>
           <div>
             <label class="block text-xs font-mono uppercase text-celiMarrom/70 mb-1">Seu Nome *</label>
             <input type="text" id="client-name" placeholder="Ex: Maria Silva" class="w-full bg-white border border-celiOliva/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-celiVerde font-sans">
@@ -623,7 +663,7 @@
           </div>
           <div>
             <label class="block text-xs font-mono uppercase text-celiMarrom/70 mb-1">Forma de Pagamento *</label>
-            <select id="payment-method" class="w-full bg-white border border-celiOliva/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-celiVerde font-sans">
+            <select id="payment-method" onchange="atualizarUI()" class="w-full bg-white border border-celiOliva/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-celiVerde font-sans">
               <option value="Pix">PIX</option>
               <option value="Cartão de Crédito">Cartão de Crédito</option>
               <option value="Cartão de Débito">Cartão de Débito</option>
@@ -636,16 +676,9 @@
           </div>
         </div>
 
-        <!-- Resumo do Pedido -->
-        <div class="space-y-3">
-          <h4 class="font-mono text-xs font-bold uppercase text-celiTerracota border-b border-celiOliva/10 pb-2">Itens Selecionados</h4>
-          <div id="cart-items-summary" class="space-y-2 text-sm">
-            <p class="text-celiMarrom/50 font-mono text-xs italic">Nenhum prato selecionado ainda.</p>
-          </div>
-        </div>
-
-        <!-- Total -->
+        <!-- Resumo de Totais -->
         <div class="space-y-2">
+          <h4 class="font-mono text-[0.65rem] font-bold uppercase text-celiTerracota border-b border-celiOliva/10 pb-2">Resumo do Pedido</h4>
           <div class="flex items-center justify-between text-sm text-celiMarrom/60 px-1">
             <span class="font-mono uppercase tracking-wide">Subtotal</span>
             <span id="modal-cart-subtotal" class="font-oswald">R$ 0,00</span>
@@ -657,20 +690,20 @@
             </span>
             <span id="modal-cart-discount" class="font-oswald text-celiVerde">- R$ 0,00</span>
           </div>
-          <div id="pix-hint-row" class="flex items-center justify-between text-xs px-1">
+          <div id="pix-hint-row" class="flex items-center justify-between text-xs px-1 hidden">
             <span class="text-celiMarrom/50 font-mono italic">Pague com PIX e economize</span>
             <span id="modal-pix-savings" class="font-oswald text-celiTerracota font-bold">R$ 0,00</span>
           </div>
           <div class="bg-celiVerde/5 border border-celiVerde/20 rounded-2xl p-4 flex items-center justify-between mt-1">
-            <span class="font-mono text-sm font-bold text-celiVerde uppercase tracking-widest">Total do Pedido</span>
+            <span class="font-mono text-sm font-bold text-celiVerde uppercase tracking-widest">Total Final</span>
             <span id="modal-cart-total" class="text-3xl font-oswald text-celiVerde">R$ 0,00</span>
           </div>
         </div>
 
       </div>
 
-      <!-- Rodapé do Modal -->
-      <div class="p-6 border-t border-celiOliva/10 space-y-3 bg-white">
+      <!-- Rodapé -->
+      <div class="p-5 border-t border-celiOliva/10 space-y-3 bg-white shrink-0">
         <button onclick="enviarParaWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#1aab55] text-white font-mono font-bold text-sm py-4 rounded-2xl transition-all flex items-center justify-center gap-3 uppercase tracking-wider">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.525 5.848L.057 23.571l5.862-1.538A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.801 9.801 0 01-4.99-1.365l-.358-.213-3.48.913.929-3.394-.234-.371A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
           Confirmar e Enviar Pedido
@@ -685,225 +718,324 @@
        JAVASCRIPT
        ══════════════════════════════════════════ -->
   <script>
-    // ── Catálogo de Produtos ──
+    // ── Catálogo ──
     const CATALOG = {
-      desfiado:     { name: 'Frango Desfiado ao Creme de Milho',   basePrice: 20.00, category: 'tradicional' },
-      acebolado:    { name: 'Frango em Cubos Acebolado',            basePrice: 20.00, category: 'tradicional' },
-      almondegas:   { name: 'Almôndegas ao Molho Pomodoro',         basePrice: 20.00, category: 'tradicional' },
-      xadrez:       { name: 'Frango Xadrez da Casa',                basePrice: 20.00, category: 'tradicional' },
-      mel:          { name: 'Filé de Frango ao Molho de Mel',       basePrice: 20.00, category: 'tradicional' },
-      merluza:      { name: 'Filé de Merluza',                      basePrice: 20.00, category: 'tradicional' },
-      parmegiana:   { name: 'Parmegiana com Crosta',                basePrice: 28.50, category: 'premium',     fixed: true },
-      nhoque:       { name: 'Nhoque à Bolonhesa',                   basePrice: 33.50, category: 'premium',     fixed: true },
-      lasanha:      { name: 'Lasanha Saborosa',                     basePrice: 26.00, category: 'premium',     fixed: true },
-      escondidinho: { name: 'Escondidinho Caprichado',              basePrice: 24.50, category: 'premium',     fixed: true },
-      panquecas:    { name: 'Panquecas Caseiras',                   basePrice: 23.50, category: 'premium',     fixed: true },
-      macarrao:     { name: 'Macarrões da Casa',                    basePrice: 24.90, category: 'premium',     fixed: true },
-      caldo:        { name: 'Caldo Artesanal (500ml)',              basePrice: 21.90, category: 'caldos',      fixed: true },
+      desfiado:     { name: 'Frango Desfiado ao Creme de Milho',  basePrice: 20.00, category: 'tradicional' },
+      acebolado:    { name: 'Frango em Cubos Acebolado',           basePrice: 20.00, category: 'tradicional' },
+      almondegas:   { name: 'Almôndegas ao Molho Pomodoro',        basePrice: 20.00, category: 'tradicional' },
+      xadrez:       { name: 'Frango Xadrez da Casa',               basePrice: 20.00, category: 'tradicional' },
+      mel:          { name: 'Filé de Frango ao Molho de Mel',      basePrice: 20.00, category: 'tradicional' },
+      merluza:      { name: 'Filé de Merluza',                     basePrice: 20.00, category: 'tradicional' },
+      parmegiana:   { name: 'Parmegiana com Crosta',               basePrice: 28.50, category: 'premium', fixed: true },
+      nhoque:       { name: 'Nhoque à Bolonhesa',                  basePrice: 33.50, category: 'premium', fixed: true },
+      lasanha:      { name: 'Lasanha Saborosa',                    basePrice: 26.00, category: 'premium', fixed: true },
+      escondidinho: { name: 'Escondidinho Caprichado',             basePrice: 24.50, category: 'premium', fixed: true },
+      panquecas:    { name: 'Panquecas Caseiras',                  basePrice: 23.50, category: 'premium', fixed: true },
+      macarrao:     { name: 'Macarrões da Casa',                   basePrice: 24.90, category: 'premium', fixed: true },
+      caldo:        { name: 'Caldo Artesanal (500ml)',             basePrice: 21.90, category: 'caldos',  fixed: true },
     };
 
     const PRICE_MAP = { '300': 18.00, '400': 20.00, '500': 22.00 };
+    const MAX_KIT   = 50;
+    const PHONE     = '5515996779560';
 
     // ── Estado ──
-    const cart   = {};
-    const kits   = {};
-    let   currentSize = '400';
+    const state = {
+      currentKit:  {},
+      closedKits:  [],
+      kitCounter:  0,
+      currentSize: '400',
+    };
 
-    Object.keys(CATALOG).forEach(k => { cart[k] = 0; });
+    // ── Helpers ──
+    const fmt = v => `R$ ${v.toFixed(2).replace('.', ',')}`;
+
+    function currentKitMarmitas() {
+      return Object.values(state.currentKit).reduce((s, q) => s + q, 0);
+    }
+
+    function calcCurrentKitTotal() {
+      return Object.entries(state.currentKit).reduce((s, [id, qty]) => {
+        return s + qty * (CATALOG[id]?.basePrice || 0);
+      }, 0);
+    }
+
+    function allKitsGrandTotal() {
+      const closedSum = state.closedKits.reduce((s, k) => s + k.total, 0);
+      return closedSum + calcCurrentKitTotal();
+    }
+
+    function totalMarmitas() {
+      const closedSum = state.closedKits.reduce((s, k) => s + k.marmitas, 0);
+      return closedSum + currentKitMarmitas();
+    }
 
     // ── Preços por Tamanho ──
     function atualizarPrecosPorTamanho(size) {
-      currentSize = size;
-      const price = PRICE_MAP[size];
+      state.currentSize = size;
+      const price = PRICE_MAP[size] || 20.00;
       Object.entries(CATALOG).forEach(([id, item]) => {
         if (!item.fixed) {
           item.basePrice = price;
           const el = document.getElementById(`price-${id}`);
-          if (el) el.textContent = `R$ ${price.toFixed(2).replace('.', ',')}`;
+          if (el) el.textContent = fmt(price);
         }
       });
       atualizarUI();
     }
 
-    // ── Quantidade ──
-    const MAX_QTY = 40;
-
+    // ── Adicionar ao Kit ──
     function changeQty(id, delta) {
-      const current = cart[id] || 0;
-      cart[id] = Math.min(MAX_QTY, Math.max(0, current + delta));
+      const current   = state.currentKit[id] || 0;
+      const kitTotal  = currentKitMarmitas();
+
+      if (delta > 0 && kitTotal >= MAX_KIT) {
+        showKitFullToast();
+        return;
+      }
+
+      const next = Math.max(0, current + delta);
+      if (next === 0) {
+        delete state.currentKit[id];
+      } else {
+        state.currentKit[id] = next;
+      }
+
       const el = document.getElementById(`qty-${id}`);
       if (el) {
-        el.textContent = cart[id];
+        el.textContent = next;
         el.classList.add('qty-bounce');
         setTimeout(() => el.classList.remove('qty-bounce'), 200);
-        // Feedback visual ao atingir limite
-        if (cart[id] === MAX_QTY) {
-          el.style.color = '#B05216';
-          setTimeout(() => { el.style.color = ''; }, 1000);
-        }
       }
+
       atualizarUI();
     }
 
-    // ── Kits ──
-    function selecionarKit(id, name, price) {
-      if (!kits[id]) {
-        kits[id] = { name, price, qty: 1 };
-      } else {
-        kits[id].qty++;
+    function showKitFullToast() {
+      let toast = document.getElementById('kit-full-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'kit-full-toast';
+        toast.style.cssText = 'position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);z-index:200;background:#4F2915;color:#FAF8F3;font-family:monospace;font-size:0.75rem;font-weight:700;padding:0.75rem 1.25rem;border-radius:9999px;box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:opacity 0.3s;white-space:nowrap;';
+        toast.textContent = '🚫 Kit cheio! Feche este kit (50/50) e abra um novo.';
+        document.body.appendChild(toast);
       }
+      toast.style.opacity = '1';
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+    }
+
+    // ── Fechar Kit ──
+    function fecharKit() {
+      const marmitas = currentKitMarmitas();
+      if (marmitas === 0) return;
+
+      state.kitCounter++;
+
+      const items = Object.entries(state.currentKit)
+        .filter(([, qty]) => qty > 0)
+        .map(([id, qty]) => ({
+          id,
+          qty,
+          name:  CATALOG[id].name,
+          price: CATALOG[id].basePrice,
+        }));
+
+      state.closedKits.push({
+        label:    `Kit ${state.kitCounter}`,
+        size:     state.currentSize,
+        items,
+        total:    calcCurrentKitTotal(),
+        marmitas,
+      });
+
+      // Zera kit atual
+      state.currentKit = {};
+      Object.keys(CATALOG).forEach(id => {
+        const el = document.getElementById(`qty-${id}`);
+        if (el) el.textContent = '0';
+      });
+
       atualizarUI();
 
-      // Feedback visual no botão
-      const btn = event.currentTarget;
-      const orig = btn.textContent;
-      btn.textContent = '✓ Adicionado!';
-      btn.classList.add('bg-celiDourado', '!text-celiMarrom');
-      setTimeout(() => {
-        btn.textContent = orig;
-        btn.classList.remove('bg-celiDourado', '!text-celiMarrom');
-      }, 1500);
+      // Toast de confirmação
+      let toast = document.getElementById('kit-full-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'kit-full-toast';
+        toast.style.cssText = 'position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);z-index:200;background:#1E4B26;color:#FAF8F3;font-family:monospace;font-size:0.75rem;font-weight:700;padding:0.75rem 1.25rem;border-radius:9999px;box-shadow:0 8px 32px rgba(0,0,0,0.3);transition:opacity 0.3s;white-space:nowrap;';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = `✅ Kit ${state.kitCounter} fechado! Continue montando seu próximo kit.`;
+      toast.style.opacity = '1';
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2800);
     }
 
-    // ── Cálculo do Total ──
-    function calcTotal() {
-      let total = 0;
-      let itemCount = 0;
-
-      Object.entries(CATALOG).forEach(([id, item]) => {
-        const qty = cart[id] || 0;
-        if (qty > 0) { total += qty * item.basePrice; itemCount += qty; }
-      });
-
-      Object.values(kits).forEach(kit => {
-        total += kit.qty * kit.price;
-        itemCount += kit.qty;
-      });
-
-      return { total, itemCount };
-    }
-
-    // ── Atualiza UI ──
-    function atualizarUI() {
-      const { total, itemCount } = calcTotal();
-
-      const paymentEl = document.getElementById('payment-method');
-      const isPix     = paymentEl && paymentEl.value === 'Pix';
-      const discount  = total * 0.03;
-      const finalTotal = isPix ? total - discount : total;
-      const fmt = v => `R$ ${v.toFixed(2).replace('.', ',')}`;
-
-      // Dock + contador navbar
-      document.getElementById('floating-cart-badge').textContent = itemCount;
-      document.getElementById('floating-cart-total').textContent = fmt(finalTotal);
-      const navCount = document.getElementById('nav-item-count');
-      const navQty   = document.getElementById('nav-qty-total');
-      if (navCount && navQty) {
-        navQty.textContent = itemCount;
-        navCount.classList.toggle('hidden', itemCount === 0);
-        navCount.style.color = itemCount >= MAX_QTY ? '#B05216' : '';
-      }
-
-      // Subtotal, desconto e total no modal
-      document.getElementById('modal-cart-subtotal').textContent = fmt(total);
-      document.getElementById('modal-cart-total').textContent    = fmt(finalTotal);
-
-      const discountRow  = document.getElementById('pix-discount-row');
-      const hintRow      = document.getElementById('pix-hint-row');
-      const savingsEl    = document.getElementById('modal-pix-savings');
-      const discountEl   = document.getElementById('modal-cart-discount');
-
-      if (total > 0) {
-        if (isPix) {
-          discountRow.classList.remove('hidden');
-          hintRow.classList.add('hidden');
-          discountEl.textContent = `- ${fmt(discount)}`;
-        } else {
-          discountRow.classList.add('hidden');
-          hintRow.classList.remove('hidden');
-          savingsEl.textContent = fmt(discount);
-        }
-      } else {
-        discountRow.classList.add('hidden');
-        hintRow.classList.add('hidden');
-      }
-
-      // Resumo no modal
-      const summary = document.getElementById('cart-items-summary');
-      const rows = [];
-
-      Object.entries(CATALOG).forEach(([id, item]) => {
-        const qty = cart[id] || 0;
-        if (qty > 0) {
-          const sub = (qty * item.basePrice).toFixed(2).replace('.', ',');
-          rows.push(`
-            <div class="cart-item-row flex justify-between items-start py-2 border-b border-celiOliva/10 last:border-0">
-              <div>
-                <p class="font-sans text-celiMarrom text-xs font-semibold">${item.name}</p>
-                <p class="font-mono text-celiMarrom/50 text-[0.65rem]">${qty}x R$ ${item.basePrice.toFixed(2).replace('.', ',')}</p>
-              </div>
-              <span class="font-oswald text-celiVerde text-sm ml-4 whitespace-nowrap">R$ ${sub}</span>
-            </div>`);
-        }
-      });
-
-      Object.values(kits).forEach(kit => {
-        const sub = (kit.qty * kit.price).toFixed(2).replace('.', ',');
-        rows.push(`
-          <div class="cart-item-row flex justify-between items-start py-2 border-b border-celiOliva/10 last:border-0">
-            <div>
-              <p class="font-sans text-celiMarrom text-xs font-semibold">${kit.name}</p>
-              <p class="font-mono text-celiTerracota text-[0.65rem]">3% OFF aplicado ✓</p>
-            </div>
-            <span class="font-oswald text-celiVerde text-sm ml-4 whitespace-nowrap">R$ ${sub}</span>
-          </div>`);
-      });
-
-      summary.innerHTML = rows.length
-        ? rows.join('')
-        : '<p class="text-celiMarrom/50 font-mono text-xs italic">Nenhum prato selecionado ainda.</p>';
-
-      // Alerta de combo
-      const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-      const comboAlert = document.getElementById('combo-alert');
-      if (totalQty >= 5 && totalQty < 10) {
-        comboAlert.classList.remove('hidden');
-        document.getElementById('combo-alert-msg').textContent = `Faltam apenas ${10 - totalQty} marmitas para você ganhar 3% OFF com o Kit Semana Leve!`;
-      } else if (totalQty >= 10) {
-        comboAlert.classList.remove('hidden');
-        document.getElementById('combo-alert-msg').textContent = 'Você pode migrar para um dos nossos Kits e economizar ainda mais!';
-      } else {
-        comboAlert.classList.add('hidden');
-      }
+    // ── Remover Kit Fechado ──
+    function removeKit(idx) {
+      state.closedKits.splice(idx, 1);
+      atualizarUI();
     }
 
     // ── Modal ──
-    function toggleCartModal(show) {
-      const modal = document.getElementById('checkout-modal');
-      if (show) {
-        modal.classList.add('show');
-        atualizarUI();
-      } else {
-        modal.classList.remove('show');
-      }
+    function abrirModal() {
+      atualizarUI();
+      document.getElementById('checkout-modal').classList.add('show');
     }
 
-    // Fecha ao clicar no backdrop
-    document.getElementById('checkout-modal').addEventListener('click', function(e) {
-      if (e.target === this) toggleCartModal(false);
-    });
+    function fecharModal() {
+      document.getElementById('checkout-modal').classList.remove('show');
+    }
 
-    // ── Endereço ──
+    function toggleCartModal(show) {
+      if (show) abrirModal(); else fecharModal();
+    }
+
     function toggleAddressField(value) {
       document.getElementById('address-container').style.display = value === 'delivery' ? 'block' : 'none';
     }
 
-    // Mapeamento de categorias especiais para seções existentes
-    const MASSAS_IDS = ['nhoque', 'lasanha', 'macarrao', 'panquecas'];
+    // ── Atualiza UI ──
+    function atualizarUI() {
+      const marmitasKit = currentKitMarmitas();
+      const pct         = Math.min(100, (marmitasKit / MAX_KIT) * 100);
+      const allMarm     = totalMarmitas();
+      const grandTotal  = allKitsGrandTotal();
+
+      const paymentEl  = document.getElementById('payment-method');
+      const isPix      = paymentEl ? paymentEl.value === 'Pix' : false;
+      const discount   = grandTotal * 0.03;
+      const finalTotal = isPix ? grandTotal - discount : grandTotal;
+
+      // Dock: progresso
+      const bar = document.getElementById('kit-progress-bar');
+      if (bar) bar.style.width = `${pct}%`;
+
+      const lbl = document.getElementById('kit-progress-label');
+      if (lbl) lbl.textContent = `${marmitasKit} / ${MAX_KIT}`;
+
+      const btnF = document.getElementById('btn-fechar-kit');
+      if (btnF) btnF.disabled = marmitasKit === 0;
+
+      // Dock: totais
+      const nKits = state.closedKits.length + (marmitasKit > 0 ? 1 : 0);
+
+      const badge = document.getElementById('dock-kit-badge');
+      if (badge) badge.textContent = nKits;
+
+      const kLbl = document.getElementById('dock-kits-label');
+      if (kLbl) kLbl.textContent = `${nKits} kit${nKits !== 1 ? 's' : ''} · ${allMarm} marmita${allMarm !== 1 ? 's' : ''}`;
+
+      const dTotal = document.getElementById('dock-total');
+      if (dTotal) dTotal.textContent = fmt(finalTotal);
+
+      // Navbar contador
+      const navCount = document.getElementById('nav-item-count');
+      const navQty   = document.getElementById('nav-qty-total');
+      if (navCount && navQty) {
+        navQty.textContent = allMarm;
+        navCount.classList.toggle('hidden', allMarm === 0);
+      }
+
+      // Modal: header
+      const mSub = document.getElementById('modal-header-sub');
+      if (mSub) mSub.textContent = `${nKits} kit${nKits !== 1 ? 's' : ''} · ${allMarm} marmita${allMarm !== 1 ? 's' : ''}`;
+
+      // Modal: badge de kits
+      const kBadge = document.getElementById('kits-count-badge');
+      if (kBadge) kBadge.textContent = state.closedKits.length;
+
+      // Modal: kits fechados
+      const container = document.getElementById('closed-kits-container');
+      const noMsg     = document.getElementById('no-kits-msg');
+
+      if (container) {
+        if (state.closedKits.length === 0 && marmitasKit === 0) {
+          container.innerHTML = '';
+          if (noMsg) noMsg.style.display = 'block';
+        } else {
+          if (noMsg) noMsg.style.display = 'none';
+          container.innerHTML = state.closedKits.map((kit, idx) => `
+            <div class="bg-white border border-celiOliva/20 rounded-2xl overflow-hidden">
+              <div class="bg-celiVerde/8 px-4 py-2 flex items-center justify-between border-b border-celiOliva/10">
+                <div class="flex items-center gap-2">
+                  <span>📦</span>
+                  <span class="font-mono text-xs font-bold text-celiVerde uppercase tracking-wider">${kit.label}</span>
+                  <span class="bg-celiVerde/10 text-celiVerde font-mono text-[0.55rem] font-bold px-2 py-0.5 rounded-full">${kit.marmitas} marmitas · ${kit.size}g</span>
+                </div>
+                <button onclick="removeKit(${idx})" class="text-celiMarrom/40 hover:text-celiTerracota transition-colors font-mono text-[0.65rem]">✕ remover</button>
+              </div>
+              <div class="px-4 py-3 space-y-1.5">
+                ${kit.items.map(item => `
+                  <div class="flex justify-between items-center text-xs">
+                    <span class="text-celiMarrom font-sans">${item.qty}× ${item.name}</span>
+                    <span class="font-oswald text-celiVerde ml-4 whitespace-nowrap">${fmt(item.qty * item.price)}</span>
+                  </div>`).join('')}
+                <div class="flex justify-between items-center text-xs pt-2 border-t border-celiOliva/10 mt-1">
+                  <span class="font-mono text-celiMarrom/50 uppercase tracking-wide">Subtotal</span>
+                  <span class="font-oswald text-sm font-bold text-celiVerde">${fmt(kit.total)}</span>
+                </div>
+              </div>
+            </div>`).join('');
+        }
+      }
+
+      // Modal: kit em andamento (preview)
+      const preview = document.getElementById('current-kit-preview');
+      if (preview) {
+        if (marmitasKit > 0) {
+          preview.classList.remove('hidden');
+          const itemsEl = document.getElementById('current-kit-items');
+          if (itemsEl) {
+            itemsEl.innerHTML = Object.entries(state.currentKit)
+              .filter(([, qty]) => qty > 0)
+              .map(([id, qty]) => {
+                const item = CATALOG[id];
+                return `<div class="flex justify-between text-xs">
+                  <span class="text-celiMarrom">${qty}× ${item.name}</span>
+                  <span class="font-oswald text-celiVerde">${fmt(qty * item.basePrice)}</span>
+                </div>`;
+              }).join('');
+          }
+          const subEl = document.getElementById('current-kit-subtotal');
+          if (subEl) subEl.textContent = fmt(calcCurrentKitTotal());
+        } else {
+          preview.classList.add('hidden');
+        }
+      }
+
+      // Modal: totais
+      const subEl  = document.getElementById('modal-cart-subtotal');
+      const totEl  = document.getElementById('modal-cart-total');
+      if (subEl) subEl.textContent = fmt(grandTotal);
+      if (totEl) totEl.textContent = fmt(finalTotal);
+
+      const discRow  = document.getElementById('pix-discount-row');
+      const hintRow  = document.getElementById('pix-hint-row');
+      const discEl   = document.getElementById('modal-cart-discount');
+      const savEl    = document.getElementById('modal-pix-savings');
+
+      if (grandTotal > 0) {
+        if (isPix) {
+          if (discRow) discRow.classList.remove('hidden');
+          if (hintRow) hintRow.classList.add('hidden');
+          if (discEl)  discEl.textContent = `- ${fmt(discount)}`;
+        } else {
+          if (discRow) discRow.classList.add('hidden');
+          if (hintRow) hintRow.classList.remove('hidden');
+          if (savEl)   savEl.textContent = fmt(discount);
+        }
+      } else {
+        if (discRow) discRow.classList.add('hidden');
+        if (hintRow) hintRow.classList.add('hidden');
+      }
+    }
 
     // ── Filtro de Categorias ──
+    const MASSAS_IDS = ['nhoque', 'lasanha', 'macarrao', 'panquecas'];
+
     function filtrarPratos(cat) {
-      // Reset todos os botões
       document.querySelectorAll('.category-btn').forEach(btn => {
         btn.className = btn.className
           .replace(/bg-celiVerde|text-celiFundo|border-celiVerde/g, '')
@@ -918,20 +1050,17 @@
       }
 
       if (cat === 'massas') {
-        // Mostra seção premium mas oculta cards que não são massas
         document.querySelectorAll('.menu-section').forEach(sec => {
           sec.style.display = sec.id === 'section-premium' ? 'block' : 'none';
         });
-        // Dentro da seção premium, filtra apenas cards de massa
         document.querySelectorAll('#section-premium [id^="qty-"]').forEach(el => {
-          const key = el.id.replace('qty-', '');
+          const key  = el.id.replace('qty-', '');
           const card = el.closest('.bg-white.rounded-3xl');
           if (card) card.style.display = MASSAS_IDS.includes(key) ? 'flex' : 'none';
         });
         const target = document.getElementById('section-premium');
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
-        // Restaura visibilidade de todos os cards premium
         document.querySelectorAll('#section-premium [id^="qty-"]').forEach(el => {
           const card = el.closest('.bg-white.rounded-3xl');
           if (card) card.style.display = '';
@@ -946,12 +1075,13 @@
       }
     }
 
-    // ── WhatsApp ──
+    // ── Enviar para WhatsApp ──
     function enviarParaWhatsApp() {
-      const { total, itemCount } = calcTotal();
-      // total = subtotal bruto; desconto PIX calculado adiante
-      if (itemCount === 0) {
-        alert('Selecione pelo menos um prato antes de enviar!');
+      // Auto-fechar kit em andamento
+      if (currentKitMarmitas() > 0) fecharKit();
+
+      if (state.closedKits.length === 0) {
+        alert('Adicione marmitas ao kit e clique em "Fechar Kit" antes de enviar!');
         return;
       }
 
@@ -967,58 +1097,50 @@
         return;
       }
 
-      let msg = `🍽️ *PEDIDO — Casa Celi*\n`;
+      const grandTotal = allKitsGrandTotal();
+      const isPix      = pagamento === 'Pix';
+      const discount   = grandTotal * 0.03;
+      const finalTotal = isPix ? grandTotal - discount : grandTotal;
+
+      let msg = `🍱 *PEDIDO — CASA CELI*\n`;
       msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
       msg += `👤 *Cliente:* ${nome}\n`;
       msg += `📦 *Entrega:* ${entrega === 'delivery' ? `Entrega — ${endereco}` : 'Retirada na Casa Celi'}\n`;
       msg += `💳 *Pagamento:* ${pagamento}\n`;
-      msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-      msg += `🛒 *Itens do Pedido:*\n\n`;
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
 
-      Object.entries(CATALOG).forEach(([id, item]) => {
-        const qty = cart[id] || 0;
-        if (qty > 0) {
-          msg += `• ${qty}x ${item.name}\n`;
-          msg += `  R$ ${(qty * item.basePrice).toFixed(2).replace('.', ',')}\n\n`;
-        }
+      state.closedKits.forEach(kit => {
+        const plural = kit.marmitas !== 1 ? 's' : '';
+        msg += `📦 *${kit.label} — ${kit.marmitas} marmita${plural} (${kit.size}g)*\n`;
+        kit.items.forEach(item => {
+          msg += `  • ${item.qty}× ${item.name} — ${fmt(item.qty * item.price)}\n`;
+        });
+        msg += `  ┄ Subtotal: ${fmt(kit.total)}\n\n`;
       });
 
-      Object.values(kits).forEach(kit => {
-        msg += `• ${kit.qty}x ${kit.name} ⭐ 3% OFF\n`;
-        msg += `  R$ ${(kit.qty * kit.price).toFixed(2).replace('.', ',')}\n\n`;
-      });
-
-      const isPix      = pagamento === 'Pix';
-      const discount   = total * 0.03;
-      const finalTotal = isPix ? total - discount : total;
-      const fmt        = v => `R$ ${v.toFixed(2).replace('.', ',')}`;
-
       msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `💰 Subtotal: ${fmt(grandTotal)}\n`;
       if (isPix) {
-        msg += `Subtotal: ${fmt(total)}\n`;
-        msg += `🏷️ Desconto 3% OFF (PIX): - ${fmt(discount)}\n`;
-        msg += `💰 *TOTAL COM DESCONTO: ${fmt(finalTotal)}*\n`;
+        msg += `🏷️ *3% OFF PIX: -${fmt(discount)}*\n`;
+        msg += `✅ *TOTAL FINAL: ${fmt(finalTotal)}*\n`;
       } else {
-        msg += `💰 *TOTAL: ${fmt(total)}*\n`;
+        msg += `✅ *TOTAL: ${fmt(grandTotal)}*\n`;
         msg += `💡 _Pague com PIX e economize ${fmt(discount)} (3% OFF)_\n`;
       }
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      if (obs) msg += `\n📝 *Obs:* ${obs}\n`;
+      msg += `\n_Gerado pelo Cardápio Digital Casa Celi_ 🌿`;
 
-      if (obs) msg += `\n📝 *Observações:* ${obs}\n`;
-
-      msg += `\n_Pedido enviado pelo Cardápio Digital Casa Celi_ 🌿`;
-
-      const waUrl = `https://wa.me/5515996779560?text=${encodeURIComponent(msg)}`;
-      window.open(waUrl, '_blank');
+      window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
     }
+
+    // Fecha modal ao clicar no backdrop
+    document.getElementById('checkout-modal').addEventListener('click', function(e) {
+      if (e.target === this) fecharModal();
+    });
 
     // Init
     atualizarUI();
-
-    // Recalcula total/desconto ao trocar forma de pagamento
-    document.addEventListener('DOMContentLoaded', () => {
-      const payEl = document.getElementById('payment-method');
-      if (payEl) payEl.addEventListener('change', atualizarUI);
-    });
   </script>
 
 </body>
