@@ -202,8 +202,13 @@ body {{ font-family: Georgia,"Times New Roman",serif; background:{FUNDO}; color:
   margin-bottom:22px;
 }}
 .ph-logo {{
-  width:80px; height:80px; flex-shrink:0;
+  width:74px; height:74px; flex-shrink:0;
+  background:{FUNDO};
+  border-radius:50%;
   display:flex; align-items:center; justify-content:center;
+  padding:7px;
+  border:1.5px solid rgba(184,154,74,.35);
+  box-shadow:0 3px 12px rgba(0,0,0,.3);
 }}
 .ph-logo img {{ width:100%; height:100%; object-fit:contain; }}
 .ph-divider {{ width:1px; height:60px; background:rgba(250,248,243,.2); flex-shrink:0; }}
@@ -290,9 +295,14 @@ body {{ font-family: Georgia,"Times New Roman",serif; background:{FUNDO}; color:
   display:flex; flex-direction:column; align-items:center;
 }}
 .kh-logo {{
-  width:140px; height:140px;
-  margin-bottom:14px;
+  width:150px; height:150px;
+  margin-bottom:16px;
+  background:{FUNDO};
+  border-radius:50%;
   display:flex; align-items:center; justify-content:center;
+  padding:12px;
+  border:2px solid rgba(184,154,74,.4);
+  box-shadow:0 6px 28px rgba(0,0,0,.35);
 }}
 .kh-logo img {{ width:100%; height:100%; object-fit:contain; }}
 .kh-eye   {{
@@ -460,7 +470,7 @@ HTML = f"""<!DOCTYPE html>
 <div class="page">
 
   <div class="ph">
-    <div class="ph-logo"><img src="{_logo_transp}" alt=""/></div>
+    <div class="ph-logo"><img src="{_logo_full}" alt=""/></div>
     <div class="ph-divider"></div>
     <div class="ph-text">
       <div class="ph-eye">Cardápio Completo</div>
@@ -519,7 +529,7 @@ HTML = f"""<!DOCTYPE html>
 <div class="kits-page">
 
   <div class="kh">
-    <div class="kh-logo"><img src="{_logo_transp}" alt=""/></div>
+    <div class="kh-logo"><img src="{_logo_full}" alt=""/></div>
     <div class="kh-eye">Monte seu estoque</div>
     <div class="kh-title">Kits &amp; Descontos</div>
     <div class="kh-div"></div>
