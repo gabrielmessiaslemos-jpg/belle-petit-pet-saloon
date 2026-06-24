@@ -132,15 +132,16 @@ ICO_BOLT = (
 )
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
-def dish_rows(lista):
+def dish_rows(lista, preco=True):
     rows = []
     for item in lista:
         n, p = item[0], item[1]
-        desc = f'<div class="dd">{item[2]}</div>' if len(item) > 2 else ''
+        desc       = f'<div class="dd">{item[2]}</div>' if len(item) > 2 else ''
+        price_html = f'<div class="dp">{p}</div>' if preco else ''
         rows.append(
             f'<div class="dish">'
             f'<div class="dn-wrap"><div class="dn">{n}</div>{desc}</div>'
-            f'<div class="dp">{p}</div>'
+            f'{price_html}'
             f'</div>'
         )
     return ''.join(rows)
@@ -653,7 +654,7 @@ HTML = f"""<!DOCTYPE html>
 
     <div class="sec">
       <div class="sh"><span class="sl">Tradicionais</span><div class="sr"></div></div>
-      {dish_rows(TRADICIONAIS)}
+      {dish_rows(TRADICIONAIS, preco=False)}
     </div>
 
     <div class="sec">
