@@ -31,22 +31,59 @@ KIT_SIZES = [
     ]},
 ]
 
-def size_cards():
+KIT_TIERS = [
+    {
+        'name': 'Kit 10', 'qty': 10, 'badge': None, 'featured': False,
+        'sizes': [
+            {'label': '300 ml', 'unit': 19, 'total': 190},
+            {'label': '400 ml', 'unit': 21, 'total': 210},
+            {'label': '500 ml', 'unit': 23, 'total': 230},
+        ]
+    },
+    {
+        'name': 'Kit 20', 'qty': 20, 'badge': 'MAIS POPULAR', 'featured': True,
+        'sizes': [
+            {'label': '300 ml', 'unit': 18, 'total': 360},
+            {'label': '400 ml', 'unit': 20, 'total': 400},
+            {'label': '500 ml', 'unit': 22, 'total': 440},
+        ]
+    },
+    {
+        'name': 'Kit 30', 'qty': 30, 'badge': '10% OFF', 'featured': False,
+        'sizes': [
+            {'label': '300 ml', 'unit': 17, 'total': 510},
+            {'label': '400 ml', 'unit': 19, 'total': 570},
+            {'label': '500 ml', 'unit': 21, 'total': 630},
+        ]
+    },
+]
+
+def tier_cards():
     cards = ''
-    for sz in KIT_SIZES:
-        rows = ''
-        for t in sz['tiers']:
-            cls = ' class="best"' if t.get('best') else ''
-            rows += (f'<tr{cls}>'
-                     f'<td><span class="sc-qty">{t["qty"]}×</span>'
-                     f'<br><span class="sc-un">R${t["unit"]},00/un</span></td>'
-                     f'<td class="sc-tot">R$ {t["total"]}</td>'
-                     f'<td class="sc-off">{t["off"]}</td>'
-                     f'</tr>')
-        cards += (f'<div class="sc">'
-                  f'<div class="sc-hdr">{sz["label"]}</div>'
-                  f'<table class="sc-table"><tbody>{rows}</tbody></table>'
-                  f'</div>')
+    for tier in KIT_TIERS:
+        feat  = ' featured' if tier['featured'] else ''
+        badge = (f'<div class="tc-badge">{tier["badge"]}</div>' if tier['badge'] else '')
+        u_min = min(s['unit'] for s in tier['sizes'])
+        u_max = max(s['unit'] for s in tier['sizes'])
+        rows  = ''.join(
+            f'<div class="tc-row">'
+            f'<span class="tc-size">{s["label"]}</span>'
+            f'<span class="tc-total">R$ {s["total"]}</span>'
+            f'</div>'
+            for s in tier['sizes']
+        )
+        cards += (
+            f'<div class="tc{feat}">'
+            f'  <div class="tc-head">'
+            f'    {badge}'
+            f'    <div class="tc-name">{tier["name"]}</div>'
+            f'    <div class="tc-qty">{tier["qty"]}</div>'
+            f'    <div class="tc-per">marmitas</div>'
+            f'    <div class="tc-price">R$ {u_min}–{u_max}<span class="tc-un">/un</span></div>'
+            f'  </div>'
+            f'  <div class="tc-body">{rows}</div>'
+            f'</div>'
+        )
     return cards
 
 # ── Logos em base64 ───────────────────────────────────────────────────────────
@@ -271,48 +308,90 @@ body {{ font-family: Georgia,"Times New Roman",serif; background:{FUNDO}; color:
 }}
 .kh-sub   {{ font-size:10px; color:{OLIVA}; font-style:italic; line-height:1.7; }}
 
-/* Barras de desconto */
-.disc-bar {{ display:flex; gap:2px; margin:0 16mm 16px; }}
-.ds {{
-  flex:1; padding:10px 12px;
-  background:rgba(250,248,243,.07);
-  border-top:2px solid transparent;
-}}
-.ds.act {{ background:rgba(184,154,74,.15); border-top-color:{DOURADO}; }}
-.ds-n   {{
-  font-family:"Courier New",monospace; font-size:22px;
-  font-weight:bold; color:{FUNDO};
-}}
-.ds-un  {{
-  font-family:"Courier New",monospace; font-size:7.5px;
-  text-transform:uppercase; letter-spacing:1.5px; color:{OLIVA};
-  margin-top:2px;
-}}
-.ds-off {{ font-family:"Courier New",monospace; font-size:10px; font-weight:bold; color:{TERRA}; margin-top:4px; }}
-.ds.act .ds-off {{ color:{DOURADO}; }}
+/* ── Tier cards (Kit 10 / 20 / 30) ── */
+.tier-cards {{ display:flex; gap:10px; margin:0 14mm 18px; }}
 
-/* Cards de tamanho */
-.size-cards {{ display:flex; gap:8px; margin:0 16mm 16px; }}
-.sc {{ flex:1; background:{FUNDO}; overflow:hidden; border-radius:2px; }}
-.sc-hdr {{
-  background:{DOURADO}; color:{VERDE};
-  font-family:"Courier New",monospace; font-size:8px;
-  text-transform:uppercase; letter-spacing:4px;
-  padding:8px; text-align:center; font-weight:bold;
+.tc {{
+  flex:1;
+  border:1px solid rgba(184,154,74,.2);
+  overflow:hidden;
 }}
-.sc-table {{ width:100%; border-collapse:collapse; }}
-.sc-table td {{
-  padding:9px 8px;
-  border-bottom:1px solid rgba(30,75,38,.07);
-  vertical-align:middle;
+.tc.featured {{
+  border-color:{DOURADO};
+  position:relative;
 }}
-.sc-table tr.best td {{ background:rgba(176,82,22,.05); }}
-.sc-table tr:last-child td {{ border-bottom:none; }}
-.sc-qty {{ font-family:"Courier New",monospace; font-weight:bold; color:{VERDE}; font-size:14px; }}
-.sc-un  {{ color:{OLIVA}; font-size:8px; font-family:"Courier New",monospace; }}
-.sc-tot {{ font-family:"Courier New",monospace; font-weight:bold; color:{VERDE}; font-size:16px; text-align:right; }}
-.sc-off {{ font-size:8px; font-family:"Courier New",monospace; font-weight:bold; color:{TERRA}; text-align:right; min-width:44px; }}
-.sc-table tr.best .sc-off {{ color:{DOURADO}; }}
+
+/* Cabeçalho do card */
+.tc-head {{
+  padding:18px 14px 14px;
+  text-align:center;
+  background:rgba(250,248,243,.05);
+  border-bottom:1px solid rgba(184,154,74,.15);
+}}
+.tc.featured .tc-head {{
+  background:rgba(184,154,74,.13);
+  border-bottom-color:rgba(184,154,74,.3);
+}}
+
+.tc-badge {{
+  display:inline-block;
+  font-family:"Courier New",monospace;
+  font-size:7px; text-transform:uppercase; letter-spacing:3px;
+  padding:3px 9px; margin-bottom:10px;
+  background:{DOURADO}; color:{VERDE}; font-weight:bold;
+}}
+.tc:not(.featured) .tc-badge {{
+  background:rgba(176,82,22,.25); color:{TERRA};
+}}
+
+.tc-name {{
+  font-family:"Courier New",monospace;
+  font-size:8px; text-transform:uppercase; letter-spacing:5px;
+  color:rgba(250,248,243,.45); margin-bottom:6px;
+}}
+
+.tc-qty {{
+  font-size:46px; font-weight:bold; color:{FUNDO};
+  line-height:1; letter-spacing:-1px;
+}}
+.tc.featured .tc-qty {{ color:{DOURADO}; }}
+
+.tc-per {{
+  font-family:"Courier New",monospace;
+  font-size:8px; text-transform:uppercase; letter-spacing:3px;
+  color:{OLIVA}; margin-top:2px;
+}}
+
+.tc-price {{
+  margin-top:12px;
+  font-family:"Courier New",monospace;
+  font-size:18px; font-weight:bold; color:{FUNDO};
+}}
+.tc.featured .tc-price {{ color:{DOURADO}; }}
+.tc-un {{
+  font-size:9px; font-weight:normal;
+  color:{OLIVA}; margin-left:2px;
+}}
+
+/* Corpo do card — linhas de tamanho */
+.tc-body {{ padding:6px 0; }}
+
+.tc-row {{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 14px;
+  border-bottom:1px solid rgba(250,248,243,.05);
+}}
+.tc-row:last-child {{ border-bottom:none; }}
+
+.tc-size {{
+  font-size:10px; color:rgba(250,248,243,.5);
+  font-family:"Courier New",monospace; letter-spacing:1px;
+}}
+.tc-total {{
+  font-family:"Courier New",monospace;
+  font-size:14px; font-weight:bold; color:{FUNDO};
+}}
+.tc.featured .tc-total {{ color:{DOURADO}; }}
 
 /* Notas e rodapé */
 .kn {{
@@ -447,20 +526,10 @@ HTML = f"""<!DOCTYPE html>
     <div class="kh-sub">Quanto mais você pede, mais você economiza<br>Combine qualquer prato no mesmo kit</div>
   </div>
 
-  <div class="disc-bar">
-    <div class="ds"><div class="ds-n">10×</div><div class="ds-un">Kit · Preço base</div><div class="ds-off">sem desconto</div></div>
-    <div class="ds act"><div class="ds-n">20×</div><div class="ds-un">Kit · Melhor valor</div><div class="ds-off">5% OFF ★</div></div>
-    <div class="ds"><div class="ds-n">30×</div><div class="ds-un">Kit · Máx. economia</div><div class="ds-off">10% OFF</div></div>
-  </div>
+  <div class="tier-cards">{tier_cards()}</div>
 
-  <div class="size-cards">{size_cards()}</div>
-
-  <div class="kn">
-    Validade de 90 dias no freezer · Conservar congelado<br>
-    Aquecer em banho-maria ou micro-ondas · Pedido mínimo: 10 marmitas<br>
-    Kits mistos são bem-vindos — escolha diferentes pratos no mesmo kit
-  </div>
-  <div style="text-align:center"><span class="pix">+ 3% OFF adicional pagando com PIX</span></div>
+  <div class="kn">Pedido mínimo: 10 marmitas · Kits mistos permitidos · Freezer por 90 dias</div>
+  <div style="text-align:center"><span class="pix">+ 3% OFF pagando com PIX</span></div>
 
   <div class="kf">
     <div class="kf-lbl">Faça seu pedido · WhatsApp</div>
