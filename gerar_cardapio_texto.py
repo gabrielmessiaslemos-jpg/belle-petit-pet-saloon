@@ -394,27 +394,27 @@ HTML = f"""<!DOCTYPE html>
 
   <div class="sec">
     <div class="sh"><span class="sl">Tradicionais</span><div class="sr"></div></div>
-    <div class="dish"><div class="dl"><div class="dn">Frango Desfiado ao Creme de Milho</div><div class="dd">Frango cozido lentamente e desfiado, envolvido em creme de milho suave com ervas da casa</div></div><div class="dp">R$ 20,00</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Frango em Cubos Acebolado</div><div class="dd">Cubos de peito de frango dourados com cebola caramelizada e temperos especiais</div></div><div class="dp">R$ 20,00</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Almôndegas ao Molho Pomodoro</div><div class="dd">Almôndegas artesanais de carne moída cozidas em molho de tomate fresco com manjericão</div></div><div class="dp">R$ 20,00</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Frango Xadrez da Casa</div><div class="dd">Peito de frango com legumes coloridos no molho agridoce oriental — receita exclusiva</div></div><div class="dp">R$ 20,00</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Filé de Frango ao Molho de Mel</div><div class="dd">Filé grelhado finalizado com molho de mel e mostarda, suculento e aromático</div></div><div class="dp">R$ 20,00</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Filé de Merluza</div><div class="dd">Filé de merluza temperado com limão, alho e ervas frescas, assado no ponto certo</div></div><div class="dp">R$ 20,00</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Frango Desfiado ao Creme de Milho</div></div><div class="dp">R$ 20,00</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Frango em Cubos Acebolado</div></div><div class="dp">R$ 20,00</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Almôndegas ao Molho Pomodoro</div></div><div class="dp">R$ 20,00</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Frango Xadrez da Casa</div></div><div class="dp">R$ 20,00</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Filé de Frango ao Molho de Mel</div></div><div class="dp">R$ 20,00</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Filé de Merluza</div></div><div class="dp">R$ 20,00</div></div>
   </div>
 
   <div class="sec">
     <div class="sh"><span class="sl">Premium</span><div class="sr"></div></div>
-    <div class="dish"><div class="dl"><div class="dn">Parmegiana com Crosta</div><div class="dd">Filé empanado com crosta crocante, molho de tomate encorpado e queijo gratinado</div></div><div class="dp">R$ 28,50</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Nhoque à Bolonhesa</div><div class="dd">Nhoque artesanal de batata com ragù de carne ao molho bolonhesa — feito na hora</div></div><div class="dp">R$ 33,50</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Lasanha Saborosa</div><div class="dd">Montada em camadas com carne moída temperada, molho branco cremoso e queijo</div></div><div class="dp">R$ 26,00</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Escondidinho Caprichado</div><div class="dd">Carne desfiada e temperada escondida sob purê cremoso de mandioca gratinado</div></div><div class="dp">R$ 24,50</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Panquecas Caseiras</div><div class="dd">Panquecas recheadas com frango desfiado ou carne moída, cobertas com molho de tomate</div></div><div class="dp">R$ 23,50</div></div>
-    <div class="dish"><div class="dl"><div class="dn">Macarrões da Casa</div><div class="dd">Massa no ponto certo · molho à escolha: Sugo · Bolonhesa · Alho e Óleo · Bechamel</div></div><div class="dp">R$ 24,90</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Parmegiana com Crosta</div></div><div class="dp">R$ 28,50</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Nhoque à Bolonhesa</div></div><div class="dp">R$ 33,50</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Lasanha Saborosa</div></div><div class="dp">R$ 26,00</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Escondidinho Caprichado</div></div><div class="dp">R$ 24,50</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Panquecas Caseiras</div></div><div class="dp">R$ 23,50</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Macarrões da Casa</div></div><div class="dp">R$ 24,90</div></div>
   </div>
 
   <div class="sec">
     <div class="sh"><span class="sl">Caldos Artesanais</span><div class="sr"></div></div>
-    <div class="dish"><div class="dl"><div class="dn">Caldo Artesanal (500 ml)</div><div class="dd">Preparado lentamente com ingredientes frescos · pergunte o sabor disponível</div></div><div class="dp">R$ 21,90</div></div>
+    <div class="dish"><div class="dl"><div class="dn">Caldo Artesanal (500 ml)</div></div><div class="dp">R$ 21,90</div></div>
   </div>
 
   <div class="size-note">
