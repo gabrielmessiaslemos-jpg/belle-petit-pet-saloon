@@ -588,8 +588,6 @@ HTML = f"""<!DOCTYPE html>
       de uma cozinha feita com carinho — sem abrir mão da praticidade do dia a dia.</p>
       <p>Cada marmita é preparada com ingredientes frescos, temperada com amor e congelada
       no ponto certo para preservar o sabor, a nutrição e a textura de sempre.</p>
-      <p>Aqui não tem industrializado escondido, nem atalho: é comida de verdade,
-      feita como a sua mãe faria — pronta quando precisa.</p>
     </div>
 
     <div class="sec-title">Por que escolher a Casa Celi?</div>
@@ -1015,8 +1013,6 @@ body{{font-family:Georgia,"Times New Roman",serif;background:var(--f);color:var(
       de uma cozinha feita com carinho — sem abrir mão da praticidade do dia a dia.</p>
       <p>Cada marmita é preparada com ingredientes frescos, temperada com amor e congelada
       no ponto certo para preservar o sabor, a nutrição e a textura de sempre.</p>
-      <p>Aqui não tem industrializado escondido, nem atalho: é comida de verdade,
-      feita como a sua mãe faria — pronta quando precisa.</p>
     </div>
     <div class="blk-title">Por que escolher a Casa Celi?</div>
     <div class="benefit"><div>{ICO_HEART}</div><div class="benefit-info"><div class="benefit-title">Sabor Caseiro</div><div class="benefit-text">Receitas tradicionais com ingredientes frescos e tempero da casa</div></div></div>
