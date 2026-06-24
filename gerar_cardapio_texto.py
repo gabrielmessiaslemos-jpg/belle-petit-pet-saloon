@@ -21,6 +21,12 @@ CREME   = '#EBD9B0'
 
 # ── Cardápio ──────────────────────────────────────────────────────────────────
 TRADICIONAIS = [
+    ("Frango Desfiado ao Creme de Milho", "R$ 20,00"),
+    ("Frango em Cubos Acebolado",         "R$ 20,00"),
+    ("Almôndegas ao Molho Pomodoro",      "R$ 20,00"),
+    ("Frango Xadrez da Casa",             "R$ 20,00"),
+    ("Filé de Frango ao Molho de Mel",    "R$ 20,00"),
+    ("Filé de Merluza",                   "R$ 20,00"),
     ("Frango Desfiado com Cenoura", "R$ 20,00", "Arroz, feijão e misto de brócolis com couve-flor"),
     ("Carne Moída Refogada",        "R$ 20,00", "Purê de mandioquinha e misto de cenoura com vagem"),
     ("Estrogonofe de Frango",       "R$ 20,00", "Acompanha arroz branco"),
