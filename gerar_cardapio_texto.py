@@ -79,15 +79,19 @@ _logo_b64 = base64.b64encode(open(f'{_base}/logo_casa_celi_real.png', 'rb').read
 LOGO      = f'data:image/png;base64,{_logo_b64}'
 
 # Selo circular (capa e kits)
-def logo_seal(size=130, padding=10, border_w=2):
-    img_size = size - padding * 2 - border_w * 2
+# Dois divs: externo = borda dourada visível; interno = clip circular da imagem
+def logo_seal(size=130, padding=8, border_w=2):
+    clip = size - border_w * 2 - padding * 2
     return (
-        f'<div style="width:{size}px;height:{size}px;background:{FUNDO};'
+        f'<div style="width:{size}px;height:{size}px;'
         f'border-radius:50%;border:{border_w}px solid {DOURADO};'
+        f'background:{FUNDO};'
         f'display:flex;align-items:center;justify-content:center;'
-        f'padding:{padding}px;flex-shrink:0;">'
-        f'<img src="{LOGO}" style="width:{img_size}px;height:{img_size}px;'
-        f'object-fit:contain;display:block;"/>'
+        f'flex-shrink:0;">'
+        f'<div style="width:{clip}px;height:{clip}px;'
+        f'border-radius:50%;overflow:hidden;">'
+        f'<img src="{LOGO}" style="width:100%;height:100%;object-fit:cover;display:block;"/>'
+        f'</div>'
         f'</div>'
     )
 
