@@ -29,12 +29,12 @@ TRADICIONAIS = [
     ("Filé de Merluza",                   "R$ 20,00"),
 ]
 PREMIUM = [
-    ("Parmegiana com Crosta",   "R$ 28,50"),
-    ("Nhoque à Bolonhesa",      "R$ 33,50"),
-    ("Lasanha Saborosa",        "R$ 26,00"),
-    ("Escondidinho Caprichado", "R$ 24,50"),
-    ("Panquecas Caseiras",      "R$ 23,50"),
-    ("Macarrões da Casa",       "R$ 24,90"),
+    ("Frango à Parmegiana da Casa",          "R$ 28,50"),
+    ("Nhoque Artesanal à Bolonhesa",         "R$ 33,50"),
+    ("Lasanha Caseira à Bolonhesa",          "R$ 26,00"),
+    ("Escondidinho Cremoso Gratinado",       "R$ 24,50"),
+    ("Panquecas Artesanais ao Molho da Casa","R$ 23,50"),
+    ("Massas Especiais Casa Celi",           "R$ 24,90"),
 ]
 CALDOS = [
     ("Caldo Artesanal (500 ml)", "R$ 21,90"),
