@@ -602,7 +602,7 @@ HTML = f"""<!DOCTYPE html>
       </div>
       <div class="benefit">
         <div class="benefit-icon">{ICO_SNOW}</div>
-        <div class="benefit-title">90 Dias no Freezer</div>
+        <div class="benefit-title">30 Dias no Freezer</div>
         <div class="benefit-text">Congelamento seguro que preserva sabor e nutrição completa</div>
       </div>
       <div class="benefit">
@@ -634,7 +634,7 @@ HTML = f"""<!DOCTYPE html>
       <div class="step">
         <div class="step-n">3</div>
         <div class="step-t">Armazene</div>
-        <div class="step-d">Guarde no freezer por até 90 dias sem perder o sabor</div>
+        <div class="step-d">Guarde no freezer por até 30 dias sem perder o sabor</div>
       </div>
       <div class="step">
         <div class="step-n">4</div>
@@ -707,7 +707,7 @@ HTML = f"""<!DOCTYPE html>
 
   <div class="tier-cards">{tier_cards()}</div>
 
-  <div class="kits-note">Pedido mínimo: 10 marmitas · Kits mistos permitidos · Validade: 90 dias no freezer</div>
+  <div class="kits-note">Pedido mínimo: 10 marmitas · Kits mistos permitidos · Validade: 30 dias no freezer</div>
   <div class="pix-badge"><span class="pix">+ 3% OFF pagando com PIX</span></div>
 
   <div class="kits-foot">
@@ -752,7 +752,7 @@ HTML = f"""<!DOCTYPE html>
         <div class="os-n">4</div>
         <div>
           <div class="os-title">Pague e aproveite</div>
-          <div class="os-desc">Receba suas marmitas, guarde no freezer e tenha refeições prontas por até 90 dias. Aqueça em banho-maria ou micro-ondas e sirva.</div>
+          <div class="os-desc">Receba suas marmitas, guarde no freezer e tenha refeições prontas por até 30 dias. Aqueça em banho-maria ou micro-ondas e sirva.</div>
         </div>
       </div>
     </div>
@@ -787,4 +787,331 @@ HTML = f"""<!DOCTYPE html>
 output = "/home/user/belle-petit-pet-saloon/CasaCeli_Cardapio_Texto.pdf"
 from weasyprint import HTML as WP
 WP(string=HTML, base_url=".").write_pdf(output)
-print(f"OK → {output}")
+print(f"PDF → {output}")
+
+# ── HTML Mobile ───────────────────────────────────────────────────────────────
+def _kit_cards_mobile():
+    out = ''
+    for t in KIT_TIERS:
+        feat  = ' featured' if t['featured'] else ''
+        u_min = min(s['unit'] for s in t['sizes'])
+        u_max = max(s['unit'] for s in t['sizes'])
+        badge = (f'<div class="kc-badge-area"><span class="kc-badge">{t["badge"]}</span></div>'
+                 if t['badge'] else '<div class="kc-badge-area"></div>')
+        rows  = ''.join(
+            f'<div class="kc-row">'
+            f'<span class="kc-g">{s["label"]}</span>'
+            f'<span class="kc-total">R$ {s["total"]}</span>'
+            f'</div>'
+            for s in t['sizes']
+        )
+        out += (
+            f'<div class="kit-card{feat}">'
+            f'{badge}'
+            f'<div class="kc-head">'
+            f'<div class="kc-name">{t["name"]}</div>'
+            f'<div class="kc-marmitas">{t["qty"]} marmitas</div>'
+            f'<div class="kc-price">R$ {u_min}–{u_max}<span class="kc-un"> /un</span></div>'
+            f'</div>'
+            f'<div class="kc-body">{rows}</div>'
+            f'</div>'
+        )
+    return out
+
+def _dish_mobile(lista, show_price=True):
+    rows = []
+    for item in lista:
+        n, p = item[0], item[1]
+        desc  = f'<div class="dish-desc">{item[2]}</div>' if len(item) > 2 else ''
+        price = f'<span class="dish-price">{p}</span>' if show_price else ''
+        rows.append(
+            f'<div class="dish">'
+            f'<div class="dish-wrap"><div class="dish-name">{n}</div>{desc}</div>'
+            f'{price}'
+            f'</div>'
+        )
+    return ''.join(rows)
+
+def _seal_mobile(size=180, pad=10):
+    clip = size - pad * 2
+    return (
+        f'<div style="width:{size}px;height:{size}px;border-radius:50%;'
+        f'border:2px solid {DOURADO};background:{FUNDO};'
+        f'display:flex;align-items:center;justify-content:center;margin:0 auto;">'
+        f'<div style="width:{clip}px;height:{clip}px;border-radius:50%;overflow:hidden;">'
+        f'<img src="{LOGO}" style="width:100%;height:100%;object-fit:cover;display:block;"/>'
+        f'</div></div>'
+    )
+
+def _mini_seal_mobile(size=44):
+    clip = size - 8
+    return (
+        f'<div style="width:{size}px;height:{size}px;border-radius:50%;'
+        f'border:1px solid {DOURADO};background:{FUNDO};flex-shrink:0;'
+        f'display:flex;align-items:center;justify-content:center;">'
+        f'<div style="width:{clip}px;height:{clip}px;border-radius:50%;overflow:hidden;">'
+        f'<img src="{LOGO}" style="width:100%;height:100%;object-fit:cover;display:block;"/>'
+        f'</div></div>'
+    )
+
+def _sec_header_mobile(eye, title):
+    return (
+        f'<div class="sec-header">'
+        f'{_mini_seal_mobile()}'
+        f'<div style="flex:1;min-width:0;">'
+        f'<div class="sec-eye">{eye}</div>'
+        f'<div class="sec-title">{title}</div>'
+        f'</div></div>'
+    )
+
+HTML_MOBILE = f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Casa Celi — Cardápio</title>
+<style>
+:root{{
+  --v:{VERDE};--o:{OLIVA};--t:{TERRA};--m:{MARROM};
+  --d:{DOURADO};--f:{FUNDO};--f2:{FUNDO2};--c:{CREME};
+}}
+*{{margin:0;padding:0;box-sizing:border-box;}}
+body{{font-family:Georgia,"Times New Roman",serif;background:var(--f);color:var(--m);max-width:480px;margin:0 auto;}}
+
+/* CAPA */
+.cover{{background:linear-gradient(170deg,var(--f) 0%,var(--f2) 60%,var(--c) 100%);}}
+.stripe{{background:var(--v);padding:10px;text-align:center;font-family:monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(250,248,243,.55);}}
+.cover-center{{padding:30px 24px;display:flex;flex-direction:column;align-items:center;}}
+.brand{{font-size:34px;font-weight:bold;color:var(--v);letter-spacing:3px;margin-top:16px;text-align:center;}}
+.brand-city{{font-family:monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--o);margin-top:4px;text-align:center;}}
+.orn{{display:flex;align-items:center;gap:10px;margin:16px 0;}}
+.orn-line{{width:40px;height:1px;background:var(--d);opacity:.5;}}
+.orn-dot{{color:var(--d);font-size:12px;}}
+.tagline{{font-size:14px;font-style:italic;color:var(--m);text-align:center;line-height:1.7;opacity:.8;max-width:280px;}}
+.cover-foot{{background:var(--v);padding:20px;text-align:center;}}
+.wa-label{{font-family:monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(250,248,243,.5);}}
+.wa{{font-family:monospace;font-size:24px;color:var(--d);letter-spacing:2px;margin:6px 0;}}
+.wa-sub{{font-family:monospace;font-size:8px;text-transform:uppercase;letter-spacing:3px;color:rgba(250,248,243,.35);}}
+
+/* SEÇÃO GENÉRICA */
+.sec-header{{background:var(--v);padding:13px 18px;display:flex;align-items:center;gap:12px;}}
+.sec-eye{{font-family:monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--o);}}
+.sec-title{{font-size:16px;font-weight:bold;color:var(--f);margin-top:2px;}}
+.sec-body{{padding:18px 18px 14px;background:var(--f);}}
+.sec-foot{{padding:9px 18px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(143,156,104,.22);background:var(--f);}}
+.sf-brand{{font-size:8px;color:var(--o);font-style:italic;}}
+.sf-wa{{font-family:monospace;font-size:9px;color:var(--v);}}
+
+/* APRESENTAÇÃO */
+.intro-box{{background:rgba(44,95,52,.04);border-left:3px solid var(--d);padding:14px 15px;margin-bottom:18px;font-size:13px;line-height:1.8;}}
+.intro-box p+p{{margin-top:9px;}}
+.blk-title{{font-family:monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t);text-align:center;margin-bottom:12px;}}
+.benefit{{background:white;border:1px solid rgba(143,156,104,.25);padding:13px 15px;display:flex;align-items:center;gap:13px;margin-bottom:8px;}}
+.benefit-info{{flex:1;}}
+.benefit-title{{font-size:12px;font-weight:bold;color:var(--v);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}}
+.benefit-text{{font-size:11px;color:var(--m);line-height:1.5;opacity:.8;}}
+.divider{{height:1px;background:rgba(143,156,104,.25);margin:16px 0;}}
+.steps{{display:grid;grid-template-columns:1fr 1fr;gap:8px;}}
+.step{{text-align:center;padding:12px 8px;}}
+.step-n{{width:30px;height:30px;border-radius:50%;background:var(--v);color:var(--f);font-family:monospace;font-size:13px;font-weight:bold;display:flex;align-items:center;justify-content:center;margin:0 auto 7px;}}
+.step-t{{font-size:12px;font-weight:bold;color:var(--v);margin-bottom:3px;}}
+.step-d{{font-size:10px;color:var(--m);line-height:1.5;opacity:.75;}}
+
+/* CARDÁPIO */
+.cat-sec{{margin-bottom:14px;}}
+.cat-header{{display:flex;align-items:center;gap:10px;margin-bottom:8px;}}
+.cat-label{{font-family:monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--t);white-space:nowrap;}}
+.cat-line{{flex:1;height:1px;background:rgba(143,156,104,.3);}}
+.dish{{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px dotted rgba(143,156,104,.2);gap:8px;}}
+.dish:last-child{{border-bottom:none;}}
+.dish-wrap{{flex:1;min-width:0;}}
+.dish-name{{font-size:13px;font-weight:bold;color:var(--v);line-height:1.3;}}
+.dish-desc{{font-size:10px;color:var(--m);font-style:italic;opacity:.6;margin-top:2px;}}
+.dish-price{{font-family:monospace;font-size:12px;color:var(--d);font-weight:bold;background:rgba(184,154,74,.1);padding:3px 8px;white-space:nowrap;flex-shrink:0;}}
+.size-note{{background:rgba(44,95,52,.04);border-left:3px solid var(--d);padding:12px 14px;margin-top:10px;}}
+.sn-label{{font-family:monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--o);margin-bottom:7px;}}
+.sn-grid{{display:flex;gap:10px;flex-wrap:wrap;}}
+.sn-item{{font-size:13px;font-weight:bold;color:var(--v);}}
+.sn-item span{{font-weight:normal;color:var(--m);font-size:12px;}}
+.sn-foot{{font-size:9px;font-style:italic;color:var(--m);margin-top:5px;opacity:.65;}}
+
+/* KITS */
+.kits-page{{background:var(--v);}}
+.kits-hdr{{padding:18px 20px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;background:rgba(0,0,0,.18);}}
+.kh-eye{{font-family:monospace;font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--o);margin-top:12px;margin-bottom:4px;}}
+.kh-title{{font-size:24px;color:var(--d);letter-spacing:2px;font-weight:bold;}}
+.kh-div{{width:40px;height:1px;background:rgba(184,154,74,.4);margin:8px auto;}}
+.kh-sub{{font-size:11px;color:var(--o);font-style:italic;line-height:1.6;text-align:center;}}
+.kh-obs{{font-family:monospace;font-size:8px;color:rgba(143,156,104,.65);line-height:1.9;text-align:center;margin-top:5px;}}
+.kit-cards{{padding:12px 16px;display:flex;flex-direction:column;gap:10px;}}
+.kit-card{{border:1px solid rgba(184,154,74,.22);display:flex;flex-direction:column;}}
+.kit-card.featured{{border:2px solid var(--d);}}
+.kc-badge-area{{min-height:0;display:flex;align-items:center;justify-content:center;padding-top:10px;}}
+.kc-badge{{display:inline-block;font-family:monospace;font-size:7px;letter-spacing:2px;text-transform:uppercase;padding:3px 12px;font-weight:bold;background:var(--d);color:var(--v);}}
+.kit-card:not(.featured) .kc-badge{{background:rgba(176,82,22,.3);color:var(--t);}}
+.kc-head{{padding:10px 16px 12px;text-align:center;background:rgba(250,248,243,.05);border-bottom:1px solid rgba(184,154,74,.12);}}
+.kit-card.featured .kc-head{{background:rgba(184,154,74,.10);border-bottom-color:rgba(184,154,74,.3);}}
+.kc-name{{font-size:22px;font-weight:bold;color:var(--f);letter-spacing:1px;}}
+.kit-card.featured .kc-name{{color:var(--d);}}
+.kc-marmitas{{font-family:monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(250,248,243,.38);margin:3px 0 9px;}}
+.kc-price{{font-family:monospace;font-size:15px;font-weight:bold;color:var(--f);}}
+.kit-card.featured .kc-price{{color:var(--d);}}
+.kc-un{{font-size:9px;font-weight:normal;color:var(--o);}}
+.kc-body{{padding:4px 0;}}
+.kc-row{{display:flex;justify-content:space-between;padding:9px 16px;border-bottom:1px solid rgba(250,248,243,.05);}}
+.kc-row:last-child{{border-bottom:none;}}
+.kc-g{{font-family:monospace;font-size:10px;color:rgba(250,248,243,.5);}}
+.kc-total{{font-family:monospace;font-size:14px;font-weight:bold;color:var(--f);}}
+.kit-card.featured .kc-total{{color:var(--d);}}
+.kits-note{{text-align:center;font-size:9px;color:var(--o);font-style:italic;padding:5px 16px;}}
+.pix-area{{text-align:center;padding:6px 0 10px;}}
+.pix-tag{{display:inline-block;font-family:monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;font-weight:bold;background:var(--d);color:var(--v);padding:5px 20px;}}
+.kits-foot{{border-top:1px solid rgba(184,154,74,.18);margin:0 16px;padding:14px 0;text-align:center;}}
+.kf-label{{font-family:monospace;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:var(--o);}}
+.kf-wa{{font-family:monospace;font-size:20px;color:var(--f);letter-spacing:2px;margin:5px 0;}}
+.kf-tag{{font-size:9px;font-style:italic;color:var(--o);padding-bottom:14px;}}
+
+/* COMO PEDIR */
+.os{{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid rgba(143,156,104,.18);}}
+.os:last-child{{border-bottom:none;}}
+.os-n{{width:36px;height:36px;border-radius:50%;background:var(--v);color:var(--f);font-family:monospace;font-size:15px;font-weight:bold;display:flex;align-items:center;justify-content:center;flex-shrink:0;}}
+.os-title{{font-size:14px;font-weight:bold;color:var(--v);margin-bottom:3px;}}
+.os-desc{{font-size:11px;color:var(--m);line-height:1.6;opacity:.8;}}
+.pay-box{{background:rgba(44,95,52,.04);border:1px solid rgba(143,156,104,.25);padding:14px 15px;margin:18px 0;}}
+.pay-title{{font-family:monospace;font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:var(--o);margin-bottom:9px;}}
+.pay-methods{{display:flex;gap:8px;}}
+.pay-m{{flex:1;text-align:center;padding:10px 6px;background:white;border:1px solid rgba(143,156,104,.2);font-size:11px;color:var(--v);font-weight:bold;}}
+.cta{{background:var(--v);padding:24px 20px;text-align:center;}}
+.cta-label{{font-family:monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--o);margin-bottom:10px;}}
+.cta-wa{{font-family:monospace;font-size:26px;font-weight:bold;color:var(--d);letter-spacing:2px;margin:4px 0 8px;}}
+.cta-sub{{font-size:11px;font-style:italic;color:rgba(250,248,243,.55);}}
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<section class="cover">
+  <div class="stripe">Marmitas Congeladas Artesanais</div>
+  <div class="cover-center">
+    {_seal_mobile(180, 10)}
+    <div class="brand">{NOME}</div>
+    <div class="brand-city">{CIDADE}</div>
+    <div class="orn"><div class="orn-line"></div><div class="orn-dot">✦</div><div class="orn-line"></div></div>
+    <div class="tagline">{TAGLINE}</div>
+  </div>
+  <div class="cover-foot">
+    <div class="wa-label">Peça pelo WhatsApp</div>
+    <div class="wa">{WA}</div>
+    <div class="wa-sub">Cardápio · Kits · Encomendas</div>
+  </div>
+</section>
+
+<!-- APRESENTAÇÃO -->
+<section>
+  {_sec_header_mobile("Sobre nós", f"{NOME} · Nossa História")}
+  <div class="sec-body">
+    <div class="intro-box">
+      <p>A <strong>Casa Celi</strong> nasceu do desejo de levar para a sua mesa a autenticidade
+      de uma cozinha feita com carinho — sem abrir mão da praticidade do dia a dia.</p>
+      <p>Cada marmita é preparada com ingredientes frescos, temperada com amor e congelada
+      no ponto certo para preservar o sabor, a nutrição e a textura de sempre.</p>
+      <p>Aqui não tem industrializado escondido, nem atalho: é comida de verdade,
+      feita como a sua mãe faria — só que pronta para quando você precisar.</p>
+    </div>
+    <div class="blk-title">Por que escolher a Casa Celi?</div>
+    <div class="benefit"><div>{ICO_HEART}</div><div class="benefit-info"><div class="benefit-title">Sabor Caseiro</div><div class="benefit-text">Receitas tradicionais com ingredientes frescos e tempero da casa</div></div></div>
+    <div class="benefit"><div>{ICO_SNOW}</div><div class="benefit-info"><div class="benefit-title">30 Dias no Freezer</div><div class="benefit-text">Congelamento seguro que preserva sabor e nutrição completa</div></div></div>
+    <div class="benefit"><div>{ICO_BOLT}</div><div class="benefit-info"><div class="benefit-title">Praticidade Total</div><div class="benefit-text">Do freezer ao prato em minutos. Sem cozinhar, sem louça extra</div></div></div>
+    <div class="divider"></div>
+    <div class="blk-title">Como funciona</div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-t">Escolha</div><div class="step-d">Selecione os pratos e a gramagem</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Peça</div><div class="step-d">Envie a lista pelo WhatsApp</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Armazene</div><div class="step-d">Freezer por até 30 dias</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Aqueça</div><div class="step-d">Banho-maria ou micro-ondas</div></div>
+    </div>
+  </div>
+  <div class="sec-foot"><div class="sf-brand">Casa Celi · Congelados Artesanais · {CIDADE}</div><div class="sf-wa">{WA}</div></div>
+</section>
+
+<!-- CARDÁPIO -->
+<section>
+  {_sec_header_mobile("Cardápio Completo", f"{NOME} · Marmitas Congeladas")}
+  <div class="sec-body">
+    <div class="cat-sec">
+      <div class="cat-header"><span class="cat-label">Tradicionais</span><div class="cat-line"></div></div>
+      {_dish_mobile(TRADICIONAIS, show_price=False)}
+    </div>
+    <div class="cat-sec">
+      <div class="cat-header"><span class="cat-label">Premium</span><div class="cat-line"></div></div>
+      {_dish_mobile(PREMIUM)}
+    </div>
+    <div class="cat-sec">
+      <div class="cat-header"><span class="cat-label">Caldos Artesanais</span><div class="cat-line"></div></div>
+      {_dish_mobile(CALDOS)}
+    </div>
+    <div class="size-note">
+      <div class="sn-label">Gramagem · marmitas avulsas (Tradicionais)</div>
+      <div class="sn-grid">
+        <div class="sn-item">300 g <span>· R$ 18,00</span></div>
+        <div class="sn-item">400 g <span>· R$ 20,00</span></div>
+        <div class="sn-item">500 g <span>· R$ 22,00</span></div>
+      </div>
+      <div class="sn-foot">* Pratos Premium têm preço fixo · Consulte disponibilidade semanal</div>
+    </div>
+  </div>
+  <div class="sec-foot"><div class="sf-brand">Consulte pratos disponíveis na semana pelo WhatsApp</div><div class="sf-wa">{WA}</div></div>
+</section>
+
+<!-- KITS -->
+<section class="kits-page">
+  <div class="kits-hdr">
+    {_seal_mobile(110, 8)}
+    <div class="kh-eye">Monte seu estoque</div>
+    <div class="kh-title">Kits &amp; Descontos</div>
+    <div class="kh-div"></div>
+    <div class="kh-sub">Quanto mais você pede, mais você economiza</div>
+    <div class="kh-obs">Kits válidos para pratos tradicionais<br>Pratos premium seguem valores individuais</div>
+  </div>
+  <div class="kit-cards">{_kit_cards_mobile()}</div>
+  <div class="kits-note">Pedido mínimo: 10 marmitas · Kits mistos permitidos · Validade: 30 dias no freezer</div>
+  <div class="pix-area"><span class="pix-tag">+ 3% OFF pagando com PIX</span></div>
+  <div class="kits-foot">
+    <div class="kf-label">Faça seu pedido · WhatsApp</div>
+    <div class="kf-wa">{WA}</div>
+    <div class="kf-tag">Casa Celi · Congelados com sabor de cozinha afetiva</div>
+  </div>
+</section>
+
+<!-- COMO PEDIR -->
+<section>
+  {_sec_header_mobile("Pedido simples e rápido", f"{NOME} · Como Pedir")}
+  <div class="sec-body">
+    <div class="os"><div class="os-n">1</div><div><div class="os-title">Escolha seus pratos</div><div class="os-desc">Veja o cardápio e selecione as marmitas. Informe a gramagem: 300 g, 400 g ou 500 g. Pode misturar pratos no mesmo kit.</div></div></div>
+    <div class="os"><div class="os-n">2</div><div><div class="os-title">Envie pelo WhatsApp</div><div class="os-desc">Mande a lista com pratos, quantidade, gramagem e seu nome para {WA}.</div></div></div>
+    <div class="os"><div class="os-n">3</div><div><div class="os-title">Combine a entrega</div><div class="os-desc">Entrega em Sorocaba ou retirada no local. Confirmamos tudo pelo WhatsApp.</div></div></div>
+    <div class="os"><div class="os-n">4</div><div><div class="os-title">Pague e aproveite</div><div class="os-desc">Guarde no freezer por até 30 dias. Aqueça em banho-maria ou micro-ondas e sirva.</div></div></div>
+    <div class="pay-box">
+      <div class="pay-title">Formas de pagamento</div>
+      <div class="pay-methods">
+        <div class="pay-m">PIX<br><span style="font-size:9px;font-weight:normal;opacity:.7;">3% OFF</span></div>
+        <div class="pay-m">Dinheiro</div>
+        <div class="pay-m">Transferência<br><span style="font-size:9px;font-weight:normal;opacity:.7;">na entrega</span></div>
+      </div>
+    </div>
+    <div class="cta">
+      <div class="cta-label">Peça agora mesmo</div>
+      <div class="cta-wa">{WA}</div>
+      <div class="cta-sub">WhatsApp · Atendimento de segunda a sábado</div>
+    </div>
+  </div>
+  <div class="sec-foot"><div class="sf-brand">Casa Celi · {CIDADE} · Congelados Artesanais</div><div class="sf-wa">{WA}</div></div>
+</section>
+
+</body>
+</html>"""
+
+mobile_output = "/home/user/belle-petit-pet-saloon/cardapio_mobile.html"
+with open(mobile_output, 'w', encoding='utf-8') as f:
+    f.write(HTML_MOBILE)
+print(f"HTML  → {mobile_output}")
