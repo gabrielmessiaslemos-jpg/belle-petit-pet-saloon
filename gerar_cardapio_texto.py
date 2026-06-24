@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Gera CasaCeli_Cardapio_Texto.pdf — com logo SVG fiel à marca."""
 
-import math
+import math, base64, os
 
 # ── preços avulsas ───────────────────────────────────────────────────────────
 BASE = {'300': 18.00, '400': 20.00, '500': 22.00}
@@ -43,175 +43,12 @@ def size_cards():
                   f'</div>')
     return cards
 
-# ── SVG: badge oval com bordas festonadas ────────────────────────────────────
-def scalloped_oval(cx, cy, rx, ry, bumps=26, amp=7):
-    steps = bumps * 24
-    pts = []
-    for i in range(steps + 1):
-        t = 2 * math.pi * i / steps
-        s = 1 + (amp / ((rx + ry) / 2)) * math.cos(bumps * t)
-        pts.append(f"{cx + rx*s*math.cos(t):.2f},{cy + ry*s*math.sin(t):.2f}")
-    return "M " + " L ".join(pts) + " Z"
+# ── Logo real em base64 ──────────────────────────────────────────────────────
+_logo_path = os.path.join(os.path.dirname(__file__), 'logo_casa_celi_real.png')
+_logo_b64  = base64.b64encode(open(_logo_path, 'rb').read()).decode()
+_logo_src  = f'data:image/png;base64,{_logo_b64}'
 
-BADGE = scalloped_oval(250, 215, 210, 220)
-
-# ── SVG completo do logo ─────────────────────────────────────────────────────
-LOGO_SVG = f"""
-<svg viewBox="0 0 500 470" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-  <defs>
-    <filter id="sh" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="5" stdDeviation="10" flood-color="#00000022"/>
-    </filter>
-  </defs>
-
-  <!-- ── Badge background ── -->
-  <path d="{BADGE}" fill="#FEFAF3" filter="url(#sh)" stroke="white" stroke-width="6"/>
-  <path d="{BADGE}" fill="none" stroke="#2C5F34" stroke-width="2.5"/>
-  <!-- Inner ring -->
-  <ellipse cx="250" cy="215" rx="194" ry="203" fill="none" stroke="#C4952A"
-           stroke-width="0.8" stroke-dasharray="3 4"/>
-
-  <!-- ── Trigo no topo ── -->
-  <g transform="translate(250,58)">
-    <!-- haste central -->
-    <line x1="0" y1="38" x2="0" y2="-10" stroke="#C4952A" stroke-width="2"/>
-    <!-- grãos centrais -->
-    <ellipse cx="0"  cy="-10" rx="7"  ry="13" fill="#C4952A" transform="rotate(0)"/>
-    <ellipse cx="-9" cy="2"   rx="6"  ry="11" fill="#C4952A" transform="rotate(-20,-9,2)"/>
-    <ellipse cx="9"  cy="2"   rx="6"  ry="11" fill="#C4952A" transform="rotate(20,9,2)"/>
-    <ellipse cx="-14" cy="14"  rx="5" ry="10" fill="#C4952A" transform="rotate(-30,-14,14)"/>
-    <ellipse cx="14"  cy="14"  rx="5" ry="10" fill="#C4952A" transform="rotate(30,14,14)"/>
-    <!-- vapor -->
-    <path d="M -12 35 Q -18 20 -10 5"  stroke="#C4952A" stroke-width="1.2" fill="none" opacity="0.55" stroke-linecap="round"/>
-    <path d="M 0 38 Q 0 18 0 2"        stroke="#C4952A" stroke-width="1.2" fill="none" opacity="0.55" stroke-linecap="round"/>
-    <path d="M 12 35 Q 18 20 10 5"     stroke="#C4952A" stroke-width="1.2" fill="none" opacity="0.55" stroke-linecap="round"/>
-  </g>
-
-  <!-- ── Ramos de oliveira esquerdo ── -->
-  <g transform="translate(75,188)">
-    <path d="M 0 20 Q 20 -10 50 -55" stroke="#2C5F34" stroke-width="1.8" fill="none"/>
-    <ellipse cx="12"  cy="5"   rx="14" ry="5.5" fill="#2C5F34" transform="rotate(-35,12,5)"/>
-    <ellipse cx="24"  cy="-12" rx="14" ry="5.5" fill="#2C5F34" transform="rotate(-42,24,-12)"/>
-    <ellipse cx="36"  cy="-29" rx="13" ry="5"   fill="#2C5F34" transform="rotate(-50,36,-29)"/>
-    <ellipse cx="46"  cy="-46" rx="12" ry="4.5" fill="#2C5F34" transform="rotate(-55,46,-46)"/>
-    <!-- bacas -->
-    <circle cx="10"  cy="3"   r="3" fill="#6B8F4A" opacity="0.7"/>
-    <circle cx="28"  cy="-16" r="3" fill="#6B8F4A" opacity="0.7"/>
-  </g>
-
-  <!-- ── Ramos de oliveira direito (espelhado) ── -->
-  <g transform="translate(425,188) scale(-1,1)">
-    <path d="M 0 20 Q 20 -10 50 -55" stroke="#2C5F34" stroke-width="1.8" fill="none"/>
-    <ellipse cx="12"  cy="5"   rx="14" ry="5.5" fill="#2C5F34" transform="rotate(-35,12,5)"/>
-    <ellipse cx="24"  cy="-12" rx="14" ry="5.5" fill="#2C5F34" transform="rotate(-42,24,-12)"/>
-    <ellipse cx="36"  cy="-29" rx="13" ry="5"   fill="#2C5F34" transform="rotate(-50,36,-29)"/>
-    <ellipse cx="46"  cy="-46" rx="12" ry="4.5" fill="#2C5F34" transform="rotate(-55,46,-46)"/>
-    <circle cx="10"  cy="3"   r="3" fill="#6B8F4A" opacity="0.7"/>
-    <circle cx="28"  cy="-16" r="3" fill="#6B8F4A" opacity="0.7"/>
-  </g>
-
-  <!-- Folhas ornamentais menores flanqueando a panela -->
-  <g transform="translate(120,210)">
-    <path d="M 0 0 Q 8 -18 0 -32" stroke="#2C5F34" stroke-width="1.2" fill="none"/>
-    <ellipse cx="4"  cy="-10" rx="9"  ry="4" fill="#2C5F34" transform="rotate(-40,4,-10)"/>
-    <ellipse cx="-2" cy="-22" rx="8"  ry="3.5" fill="#2C5F34" transform="rotate(-55,-2,-22)"/>
-  </g>
-  <g transform="translate(380,210) scale(-1,1)">
-    <path d="M 0 0 Q 8 -18 0 -32" stroke="#2C5F34" stroke-width="1.2" fill="none"/>
-    <ellipse cx="4"  cy="-10" rx="9"  ry="4" fill="#2C5F34" transform="rotate(-40,4,-10)"/>
-    <ellipse cx="-2" cy="-22" rx="8"  ry="3.5" fill="#2C5F34" transform="rotate(-55,-2,-22)"/>
-  </g>
-
-  <!-- Arabescos ornamentais -->
-  <path d="M 120 232 Q 140 220 160 228 Q 150 218 170 222" stroke="#C4952A" stroke-width="1"
-        fill="none" stroke-linecap="round" opacity="0.8"/>
-  <path d="M 380 232 Q 360 220 340 228 Q 350 218 330 222" stroke="#C4952A" stroke-width="1"
-        fill="none" stroke-linecap="round" opacity="0.8"/>
-
-  <!-- ── Panela de barro ── -->
-  <g transform="translate(250,195)">
-    <!-- Sombra da panela -->
-    <ellipse cx="0" cy="50" rx="58" ry="10" fill="#00000015"/>
-    <!-- Tampa - base -->
-    <path d="M -52 -42 Q 0 -28 52 -42 Q 0 -30 -52 -42 Z" fill="#A34820"/>
-    <!-- Tampa - domo -->
-    <path d="M -52 -42 Q -48 -72 -20 -80 Q 0 -84 20 -80 Q 48 -72 52 -42 Z" fill="#C05A28"/>
-    <!-- Tampa - aba -->
-    <path d="M -55 -42 Q 0 -36 55 -42 Q 0 -50 -55 -42 Z" fill="#A34820"/>
-    <!-- Botão da tampa -->
-    <ellipse cx="0" cy="-84" rx="10" ry="7" fill="#8B3A18"/>
-    <ellipse cx="0" cy="-87" rx="7" ry="4" fill="#C05A28"/>
-    <!-- Corpo da panela -->
-    <path d="M -60 -32 Q -72 8 -60 48 Q 0 62 60 48 Q 72 8 60 -32 Q 0 -24 -60 -32 Z" fill="#C05A28"/>
-    <!-- Anel superior do corpo -->
-    <ellipse cx="0" cy="-32" rx="60" ry="12" fill="#A34820"/>
-    <!-- Alça esquerda -->
-    <path d="M -60 -15 Q -88 -22 -86 8 Q -84 28 -60 22" fill="none" stroke="#A34820"
-          stroke-width="10" stroke-linecap="round"/>
-    <!-- Alça direita -->
-    <path d="M 60 -15 Q 88 -22 86 8 Q 84 28 60 22" fill="none" stroke="#A34820"
-          stroke-width="10" stroke-linecap="round"/>
-    <!-- Reflexo / highlight -->
-    <path d="M -35 -20 Q -28 5 -30 30" stroke="white" stroke-width="3" fill="none"
-          opacity="0.15" stroke-linecap="round"/>
-    <!-- Anel inferior do corpo -->
-    <path d="M -58 42 Q 0 56 58 42 Q 0 52 -58 42 Z" fill="#A34820" opacity="0.6"/>
-  </g>
-
-  <!-- ── Arabescos decorativos abaixo da panela ── -->
-  <path d="M 145 282 Q 175 272 200 278" stroke="#C4952A" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-  <path d="M 355 282 Q 325 272 300 278" stroke="#C4952A" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-  <circle cx="250" cy="279" r="2.5" fill="#C4952A"/>
-
-  <!-- ── Texto: Casa Celi ── -->
-  <text x="250" y="324" text-anchor="middle"
-        font-family="Georgia,'Times New Roman',serif"
-        font-size="58" font-weight="bold" fill="#2C5F34" letter-spacing="1">Casa Celi</text>
-
-  <!-- ── Divisória com ornamento ── -->
-  <line x1="118" y1="338" x2="216" y2="338" stroke="#C4952A" stroke-width="1.2"/>
-  <path d="M 234 335 Q 250 330 266 335 M 234 341 Q 250 346 266 341" stroke="#C4952A" stroke-width="0.8" fill="none"/>
-  <circle cx="250" cy="338" r="2" fill="#C4952A"/>
-  <line x1="284" y1="338" x2="382" y2="338" stroke="#C4952A" stroke-width="1.2"/>
-
-  <!-- ── Texto: CONGELADOS ARTESANAIS ── -->
-  <text x="250" y="360" text-anchor="middle"
-        font-family="Arial,Helvetica,sans-serif"
-        font-size="14.5" font-weight="bold" fill="#2C5F34" letter-spacing="3.5">CONGELADOS ARTESANAIS</text>
-
-  <!-- ── Ornamento folha entre texto e fita ── -->
-  <g transform="translate(250,374)">
-    <path d="M -10 0 Q 0 -14 10 0" fill="#2C5F34"/>
-    <path d="M -6 0 Q 0 -8 6 0"    fill="#4A7A50" opacity="0.6"/>
-    <line x1="0" y1="-5" x2="0" y2="8" stroke="#2C5F34" stroke-width="1.2"/>
-    <circle cx="-14" cy="1" r="2.5" fill="#C4952A"/>
-    <circle cx="14"  cy="1" r="2.5" fill="#C4952A"/>
-  </g>
-
-  <!-- ── Fita/banner ── -->
-  <!-- Sombra da fita -->
-  <path d="M 35 402 L 15 420 L 40 432 L 460 432 L 485 420 L 465 402 Z"
-        fill="#00000018"/>
-  <!-- Cauda esquerda -->
-  <path d="M 42 395 L 18 413 L 42 428 L 215 428 L 215 395 Z" fill="#9B3F1A"/>
-  <!-- Cauda direita -->
-  <path d="M 458 395 L 482 413 L 458 428 L 285 428 L 285 395 Z" fill="#9B3F1A"/>
-  <!-- Centro da fita -->
-  <rect x="22" y="392" width="456" height="38" rx="2" fill="#B84E22"/>
-  <!-- Reflexo superior da fita -->
-  <rect x="22" y="392" width="456" height="8" rx="2" fill="white" opacity="0.08"/>
-  <!-- Texto da fita -->
-  <text x="250" y="417" text-anchor="middle"
-        font-family="Georgia,'Times New Roman',serif"
-        font-style="italic" font-size="14" fill="#FEFAF3" letter-spacing="0.3">
-    Comida feita hoje para facilitar o seu amanhã
-  </text>
-
-  <!-- ── Ornamento final ── -->
-  <text x="250" y="455" text-anchor="middle" font-size="13" fill="#C4952A"
-        font-family="serif">✦</text>
-</svg>
-"""
+LOGO_SVG = f'<img src="{_logo_src}" style="width:100%;height:100%;object-fit:contain"/>'
 
 # ── CSS ──────────────────────────────────────────────────────────────────────
 CSS = """
@@ -339,29 +176,8 @@ body { font-family: Georgia,"Times New Roman",serif; background:#FAF8F3; color:#
 .kf-tag { font-size:9px; font-style:italic; color:#8F9C68; margin-top:7px; }
 """
 
-# Mini logo para cabeçalho das páginas internas (versão simplificada)
-MINI_LOGO = f"""
-<svg viewBox="0 0 500 470" xmlns="http://www.w3.org/2000/svg">
-  <path d="{BADGE}" fill="#FEFAF3" stroke="#2C5F34" stroke-width="2.5"/>
-  <ellipse cx="250" cy="215" rx="194" ry="203" fill="none" stroke="#C4952A" stroke-width="0.8" stroke-dasharray="3 4"/>
-  <g transform="translate(250,195)">
-    <path d="M -52 -42 Q 0 -30 52 -42 Q 48 -68 20 -76 Q 0 -80 -20 -76 Q -48 -68 -52 -42 Z" fill="#C05A28"/>
-    <ellipse cx="0" cy="-83" rx="9" ry="6" fill="#8B3A18"/>
-    <path d="M -60 -32 Q -70 8 -58 46 Q 0 60 58 46 Q 70 8 60 -32 Q 0 -24 -60 -32 Z" fill="#C05A28"/>
-    <ellipse cx="0" cy="-32" rx="60" ry="12" fill="#A34820"/>
-    <path d="M -60 -15 Q -86 -20 -84 8 Q -82 26 -60 22" fill="none" stroke="#A34820" stroke-width="9" stroke-linecap="round"/>
-    <path d="M 60 -15 Q 86 -20 84 8 Q 82 26 60 22" fill="none" stroke="#A34820" stroke-width="9" stroke-linecap="round"/>
-  </g>
-  <text x="250" y="324" text-anchor="middle" font-family="Georgia,serif" font-size="56" font-weight="bold" fill="#2C5F34">Casa Celi</text>
-  <line x1="120" y1="337" x2="218" y2="337" stroke="#C4952A" stroke-width="1.2"/>
-  <circle cx="250" cy="337" r="2" fill="#C4952A"/>
-  <line x1="282" y1="337" x2="380" y2="337" stroke="#C4952A" stroke-width="1.2"/>
-  <text x="250" y="358" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#2C5F34" letter-spacing="3.5">CONGELADOS ARTESANAIS</text>
-  <path d="M 28 395 L 8 413 L 28 428 L 472 428 L 492 413 L 472 395 Z" fill="#B84E22" opacity="0.9"/>
-  <rect x="8" y="392" width="484" height="38" rx="2" fill="#C05A28"/>
-  <text x="250" y="417" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="13.5" fill="#FEFAF3">Comida feita hoje para facilitar o seu amanhã</text>
-</svg>
-"""
+MINI_LOGO = f'<img src="{_logo_src}" style="width:100%;height:100%;object-fit:contain"/>'
+
 
 HTML = f"""<!DOCTYPE html>
 <html lang="pt-BR">
