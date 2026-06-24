@@ -21,12 +21,11 @@ CREME   = '#EBD9B0'
 
 # ── Cardápio ──────────────────────────────────────────────────────────────────
 TRADICIONAIS = [
-    ("Frango Desfiado ao Creme de Milho", "R$ 20,00"),
-    ("Frango em Cubos Acebolado",         "R$ 20,00"),
-    ("Almôndegas ao Molho Pomodoro",      "R$ 20,00"),
-    ("Frango Xadrez da Casa",             "R$ 20,00"),
-    ("Filé de Frango ao Molho de Mel",    "R$ 20,00"),
-    ("Filé de Merluza",                   "R$ 20,00"),
+    ("Frango Desfiado com Cenoura", "R$ 20,00", "Arroz, feijão e misto de brócolis com couve-flor"),
+    ("Carne Moída Refogada",        "R$ 20,00", "Purê de mandioquinha e misto de cenoura com vagem"),
+    ("Estrogonofe de Frango",       "R$ 20,00", "Acompanha arroz branco"),
+    ("Almôndegas ao Molho",         "R$ 20,00", "Arroz, feijão e misto de vagem com cenoura"),
+    ("Macarrão à Bolonhesa",        "R$ 20,00", "Ao molho bolonhesa"),
 ]
 PREMIUM = [
     ("Frango à Parmegiana da Casa",          "R$ 28,50"),
@@ -128,10 +127,17 @@ ICO_BOLT = (
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def dish_rows(lista):
-    return ''.join(
-        f'<div class="dish"><div class="dn">{n}</div><div class="dp">{p}</div></div>'
-        for n, p in lista
-    )
+    rows = []
+    for item in lista:
+        n, p = item[0], item[1]
+        desc = f'<div class="dd">{item[2]}</div>' if len(item) > 2 else ''
+        rows.append(
+            f'<div class="dish">'
+            f'<div class="dn-wrap"><div class="dn">{n}</div>{desc}</div>'
+            f'<div class="dp">{p}</div>'
+            f'</div>'
+        )
+    return ''.join(rows)
 
 def tier_cards():
     cards = ''
@@ -336,7 +342,9 @@ body {{ font-family: Georgia,"Times New Roman",serif; color:{MARROM}; }}
   border-bottom:1px dotted rgba(143,156,104,.2);
 }}
 .dish:last-child {{ border-bottom:none; }}
+.dn-wrap {{ flex:1; min-width:0; }}
 .dn {{ font-size:12px; font-weight:bold; color:{VERDE}; }}
+.dd {{ font-size:8.5px; color:{MARROM}; opacity:.6; font-style:italic; margin-top:2px; }}
 .dp {{
   font-family:"Courier New",monospace; font-size:11.5px;
   color:{DOURADO}; font-weight:bold; white-space:nowrap;
