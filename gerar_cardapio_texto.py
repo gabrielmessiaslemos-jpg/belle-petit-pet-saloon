@@ -154,31 +154,31 @@ def tier_cards():
     cards = ''
     for t in KIT_TIERS:
         feat  = ' featured' if t['featured'] else ''
-        badge = (f'<div class="tc-badge">{t["badge"]}</div>'
-                 if t['badge'] else '<div class="tc-badge-ph"></div>')
         u_min = min(s['unit'] for s in t['sizes'])
         u_max = max(s['unit'] for s in t['sizes'])
-        rows  = ''.join(
+        # Badge: espaço reservado mesmo quando vazio para alinhar os três cards
+        if t['badge']:
+            badge_html = (f'<div class="tc-badge-area">'
+                          f'<span class="tc-badge">{t["badge"]}</span>'
+                          f'</div>')
+        else:
+            badge_html = '<div class="tc-badge-area"></div>'
+        rows = ''.join(
             f'<div class="tc-row">'
             f'<span class="tc-size">{s["label"]}</span>'
-            f'<span class="tc-unit">R$ {s["unit"]}/un</span>'
             f'<span class="tc-total">R$ {s["total"]}</span>'
             f'</div>'
             for s in t['sizes']
         )
         cards += (
             f'<div class="tc{feat}">'
+            f'{badge_html}'
             f'<div class="tc-head">'
-            f'{badge}'
-            f'<div class="tc-name">{t["name"]}</div>'
-            f'<div class="tc-qty">{t["qty"]}</div>'
-            f'<div class="tc-per">marmitas</div>'
-            f'<div class="tc-price">R$ {u_min}–{u_max}<span class="tc-un">/un</span></div>'
+            f'<div class="tc-kit-name">{t["name"]}</div>'
+            f'<div class="tc-marmitas">{t["qty"]} marmitas</div>'
+            f'<div class="tc-price">R$ {u_min}–{u_max}<span class="tc-un"> /un</span></div>'
             f'</div>'
-            f'<div class="tc-body">'
-            f'<div class="tc-hdr"><span>Gramagem</span><span>Unit.</span><span>Total</span></div>'
-            f'{rows}'
-            f'</div>'
+            f'<div class="tc-body">{rows}</div>'
             f'</div>'
         )
     return cards
@@ -400,72 +400,70 @@ body {{ font-family: Georgia,"Times New Roman",serif; color:{MARROM}; }}
 /* Kit cards */
 .tier-cards {{ display:flex; gap:8px; margin:12px 14mm; }}
 .tc {{
-  flex:1; border:1px solid rgba(184,154,74,.2); overflow:hidden;
+  flex:1; border:1px solid rgba(184,154,74,.2);
   display:flex; flex-direction:column;
 }}
-.tc.featured {{ border-color:{DOURADO}; border-width:2px; }}
+.tc.featured {{ border:2px solid {DOURADO}; }}
 
+/* Área do badge — altura fixa para alinhar os três cards */
+.tc-badge-area {{
+  min-height:26px; display:flex; align-items:center;
+  justify-content:center; padding-top:10px;
+}}
+.tc-badge {{
+  display:inline-block;
+  font-family:"Courier New",monospace; font-size:6.5px;
+  text-transform:uppercase; letter-spacing:2px;
+  padding:3px 10px; font-weight:bold;
+  background:{DOURADO}; color:{VERDE};
+}}
+.tc:not(.featured) .tc-badge {{
+  background:rgba(176,82,22,.3); color:{TERRA};
+}}
+
+/* Cabeçalho do card */
 .tc-head {{
-  padding:12px 10px 10px; text-align:center;
+  padding:10px 12px 13px; text-align:center;
   background:rgba(250,248,243,.05);
   border-bottom:1px solid rgba(184,154,74,.12);
   flex-shrink:0;
 }}
 .tc.featured .tc-head {{
-  background:rgba(184,154,74,.12);
-  border-bottom-color:rgba(184,154,74,.28);
+  background:rgba(184,154,74,.10);
+  border-bottom-color:rgba(184,154,74,.3);
 }}
 
-.tc-badge {{
-  display:inline-block;
-  font-family:"Courier New",monospace; font-size:6.5px;
+/* Título principal do card */
+.tc-kit-name {{
+  font-size:22px; font-weight:bold; color:{FUNDO};
+  letter-spacing:1px; margin-bottom:3px;
+}}
+.tc.featured .tc-kit-name {{ color:{DOURADO}; }}
+
+/* Subtítulo: "20 marmitas" */
+.tc-marmitas {{
+  font-family:"Courier New",monospace; font-size:8px;
   text-transform:uppercase; letter-spacing:2px;
-  padding:3px 8px; margin-bottom:8px;
-  background:{DOURADO}; color:{VERDE}; font-weight:bold;
+  color:rgba(250,248,243,.38); margin-bottom:10px;
 }}
-.tc:not(.featured) .tc-badge {{
-  background:rgba(176,82,22,.3); color:{TERRA};
-}}
-.tc-badge-ph {{ height:18px; margin-bottom:8px; }}
 
-.tc-name {{
-  font-family:"Courier New",monospace; font-size:7px;
-  text-transform:uppercase; letter-spacing:3px;
-  color:rgba(250,248,243,.4); margin-bottom:4px;
-}}
-.tc-qty  {{
-  font-size:44px; font-weight:bold; color:{FUNDO};
-  line-height:1; letter-spacing:-2px;
-}}
-.tc.featured .tc-qty {{ color:{DOURADO}; }}
-.tc-per  {{
-  font-family:"Courier New",monospace; font-size:7.5px;
-  text-transform:uppercase; letter-spacing:2px; color:{OLIVA}; margin-top:2px;
-}}
+/* Faixa de preço */
 .tc-price {{
-  margin-top:10px; font-family:"Courier New",monospace;
-  font-size:15px; font-weight:bold; color:{FUNDO};
+  font-family:"Courier New",monospace;
+  font-size:14px; font-weight:bold; color:{FUNDO};
 }}
 .tc.featured .tc-price {{ color:{DOURADO}; }}
 .tc-un {{ font-size:8.5px; font-weight:normal; color:{OLIVA}; }}
 
-.tc-body {{ padding:2px 0; }}
-.tc-hdr {{
-  display:flex; justify-content:space-between;
-  padding:5px 10px 4px;
-  border-bottom:1px solid rgba(184,154,74,.15);
-  font-family:"Courier New",monospace; font-size:6.5px;
-  text-transform:uppercase; letter-spacing:1px;
-  color:rgba(250,248,243,.3);
-}}
+/* Linhas de gramagem */
+.tc-body {{ padding:4px 0; }}
 .tc-row {{
   display:flex; justify-content:space-between; align-items:center;
-  padding:7px 10px; border-bottom:1px solid rgba(250,248,243,.05);
+  padding:8px 12px; border-bottom:1px solid rgba(250,248,243,.05);
 }}
 .tc-row:last-child {{ border-bottom:none; }}
-.tc-size  {{ font-size:9.5px; color:rgba(250,248,243,.55); font-family:"Courier New",monospace; flex:1; }}
-.tc-unit  {{ font-family:"Courier New",monospace; font-size:9px; color:rgba(250,248,243,.4); flex:1; text-align:center; }}
-.tc-total {{ font-family:"Courier New",monospace; font-size:13px; font-weight:bold; color:{FUNDO}; text-align:right; }}
+.tc-size  {{ font-size:10px; color:rgba(250,248,243,.5); font-family:"Courier New",monospace; }}
+.tc-total {{ font-family:"Courier New",monospace; font-size:13px; font-weight:bold; color:{FUNDO}; }}
 .tc.featured .tc-total {{ color:{DOURADO}; }}
 
 .kits-note {{
