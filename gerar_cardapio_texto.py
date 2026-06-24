@@ -395,7 +395,12 @@ body {{ font-family: Georgia,"Times New Roman",serif; color:{MARROM}; }}
 }}
 .kh-title {{ font-size:24px; color:{DOURADO}; letter-spacing:2px; }}
 .kh-div   {{ width:44px; height:1px; background:rgba(184,154,74,.4); margin:8px auto 6px; }}
-.kh-sub   {{ font-size:9.5px; color:{OLIVA}; font-style:italic; line-height:1.6; }}
+.kh-sub   {{ font-size:10px; color:{OLIVA}; font-style:italic; line-height:1.6; }}
+.kh-obs   {{
+  font-family:"Courier New",monospace; font-size:7.5px;
+  color:rgba(143,156,104,.6); line-height:1.8; margin-top:6px;
+  letter-spacing:0.5px;
+}}
 
 /* Kit cards */
 .tier-cards {{ display:flex; gap:8px; margin:12px 14mm; }}
@@ -696,7 +701,8 @@ HTML = f"""<!DOCTYPE html>
     <div class="kh-eye" style="margin-top:12px;">Monte seu estoque</div>
     <div class="kh-title">Kits &amp; Descontos</div>
     <div class="kh-div"></div>
-    <div class="kh-sub">Quanto mais você pede, mais você economiza<br>Combine qualquer prato no mesmo kit</div>
+    <div class="kh-sub">Quanto mais você pede, mais você economiza</div>
+    <div class="kh-obs">Kits válidos para pratos tradicionais<br>Pratos premium seguem valores individuais</div>
   </div>
 
   <div class="tier-cards">{tier_cards()}</div>
