@@ -6,27 +6,42 @@ import math
 # ── preços avulsas ───────────────────────────────────────────────────────────
 BASE = {'300': 18.00, '400': 20.00, '500': 22.00}
 
-# ── preços por kit (por unidade × qtd) ───────────────────────────────────────
-# 10 marmitas = R$19/un · 20 = R$18/un · 30 = R$17/un (qualquer gramagem)
-KIT_TIERS = [
-    {'qty': 10, 'unit': 19.00, 'label': '10 marmitas', 'off': 'Preço base'},
-    {'qty': 20, 'unit': 18.00, 'label': '20 marmitas', 'off': '5% OFF',  'best': True},
-    {'qty': 30, 'unit': 17.00, 'label': '30 marmitas', 'off': '10% OFF'},
+# ── preços por kit com desconto progressivo por gramagem ─────────────────────
+KIT_SIZES = [
+    {'label': '300 ml', 'tiers': [
+        {'qty': 10, 'unit': 19, 'off': 'Base',    'total': 190},
+        {'qty': 20, 'unit': 18, 'off': '5% OFF',  'total': 360, 'best': True},
+        {'qty': 30, 'unit': 17, 'off': '10% OFF', 'total': 510},
+    ]},
+    {'label': '400 ml', 'tiers': [
+        {'qty': 10, 'unit': 21, 'off': 'Base',    'total': 210},
+        {'qty': 20, 'unit': 20, 'off': '5% OFF',  'total': 400, 'best': True},
+        {'qty': 30, 'unit': 19, 'off': '10% OFF', 'total': 570},
+    ]},
+    {'label': '500 ml', 'tiers': [
+        {'qty': 10, 'unit': 23, 'off': 'Base',    'total': 230},
+        {'qty': 20, 'unit': 22, 'off': '5% OFF',  'total': 440, 'best': True},
+        {'qty': 30, 'unit': 21, 'off': '10% OFF', 'total': 630},
+    ]},
 ]
 
-def row_kits():
-    rows = ''
-    for tier in KIT_TIERS:
-        total = tier['qty'] * tier['unit']
-        best  = ' best' if tier.get('best') else ''
-        rows += (f'<tr>'
-                 f'<td class="cg">{tier["label"]}</td>'
-                 f'<td class="cv{best}" style="text-align:left;padding-left:20px">'
-                 f'R$ {tier["unit"]:.0f},00 / marmita</td>'
-                 f'<td class="cv{best}">R$ {total:.0f}<span class="un">economia real</span></td>'
-                 f'<td class="cv{best} off-badge">{tier["off"]}</td>'
-                 f'</tr>')
-    return rows
+def size_cards():
+    cards = ''
+    for sz in KIT_SIZES:
+        rows = ''
+        for t in sz['tiers']:
+            cls = ' class="best"' if t.get('best') else ''
+            rows += (f'<tr{cls}>'
+                     f'<td><span class="sc-qty">{t["qty"]}×</span>'
+                     f'<br><span class="sc-un">R${t["unit"]},00/un</span></td>'
+                     f'<td class="sc-tot">R$ {t["total"]}</td>'
+                     f'<td class="sc-off">{t["off"]}</td>'
+                     f'</tr>')
+        cards += (f'<div class="sc">'
+                  f'<div class="sc-hdr">{sz["label"]}</div>'
+                  f'<table class="sc-table"><tbody>{rows}</tbody></table>'
+                  f'</div>')
+    return cards
 
 # ── SVG: badge oval com bordas festonadas ────────────────────────────────────
 def scalloped_oval(cx, cy, rx, ry, bumps=26, amp=7):
@@ -303,6 +318,19 @@ body { font-family: Georgia,"Times New Roman",serif; background:#FAF8F3; color:#
 .off-badge { font-family:"Courier New",monospace; font-size:11px; font-weight:bold; color:#B05216; text-align:center; }
 .cv.best.off-badge { color:#B89A4A; }
 
+.size-cards { display:flex; gap:8px; margin-bottom:16px; }
+.sc { flex:1; background:#FAF8F3; overflow:hidden; }
+.sc-hdr { background:#B89A4A; color:#1E4B26; font-family:"Courier New",monospace; font-size:8px; text-transform:uppercase; letter-spacing:4px; padding:7px; text-align:center; font-weight:bold; }
+.sc-table { width:100%; border-collapse:collapse; }
+.sc-table td { padding:8px 8px; border-bottom:1px solid rgba(30,75,38,.08); vertical-align:middle; }
+.sc-table tr.best td { background:rgba(176,82,22,.06); }
+.sc-table tr:last-child td { border-bottom:none; }
+.sc-qty { font-family:"Courier New",monospace; font-weight:bold; color:#1E4B26; font-size:13px; }
+.sc-un { color:#8F9C68; font-size:8px; font-family:"Courier New",monospace; }
+.sc-tot { font-family:"Courier New",monospace; font-weight:bold; color:#2C5F34; font-size:15px; text-align:right; }
+.sc-off { font-size:8px; font-family:"Courier New",monospace; font-weight:bold; color:#B05216; text-align:right; min-width:42px; }
+.sc-table tr.best .sc-off { color:#B89A4A; }
+
 .kn { text-align:center; font-size:9.5px; color:#8F9C68; font-style:italic; line-height:1.9; }
 .pix { display:inline-block; margin-top:10px; font-family:"Courier New",monospace; font-size:8.5px; text-transform:uppercase; letter-spacing:2px; font-weight:bold; background:#B89A4A; color:#1E4B26; padding:5px 16px; }
 .kf { margin-top:20px; text-align:center; border-top:1px solid rgba(184,154,74,.25); padding-top:16px; }
@@ -414,24 +442,14 @@ HTML = f"""<!DOCTYPE html>
   </div>
 
   <div class="disc-bar">
-    <div class="ds"><div class="ds-n">R$ 19</div><div class="ds-un">por marmita · Kit 10</div><div class="ds-off">R$ 190 total</div></div>
-    <div class="ds act"><div class="ds-n">R$ 18</div><div class="ds-un">por marmita · Kit 20</div><div class="ds-off">R$ 360 total · 5% OFF</div></div>
-    <div class="ds"><div class="ds-n">R$ 17</div><div class="ds-un">por marmita · Kit 30</div><div class="ds-off">R$ 510 total · 10% OFF</div></div>
+    <div class="ds"><div class="ds-n">10×</div><div class="ds-un">Kit · Preço base</div><div class="ds-off">sem desconto</div></div>
+    <div class="ds act"><div class="ds-n">20×</div><div class="ds-un">Kit · Melhor valor</div><div class="ds-off">5% OFF ★</div></div>
+    <div class="ds"><div class="ds-n">30×</div><div class="ds-un">Kit · Máx. economia</div><div class="ds-off">10% OFF</div></div>
   </div>
 
-  <table class="kit-table">
-    <thead>
-      <tr>
-        <th style="text-align:left">Qtd</th>
-        <th style="text-align:left;padding-left:20px">Preço por marmita</th>
-        <th>Total do kit</th>
-        <th>Desconto</th>
-      </tr>
-    </thead>
-    <tbody>
-      {row_kits()}
-    </tbody>
-  </table>
+  <div class="size-cards">
+    {size_cards()}
+  </div>
 
   <div class="kn">
     Validade de 90 dias no freezer · Conservar congelado<br>
