@@ -104,7 +104,7 @@ body {{ font-family: Georgia,"Times New Roman",serif; background:{FUNDO}; color:
   padding:0 30px;
 }}
 .cover-logo-wrap {{
-  width:260px; height:260px;
+  width:320px; height:320px;
   display:flex; align-items:center; justify-content:center;
   margin-bottom:22px;
 }}
@@ -160,18 +160,16 @@ body {{ font-family: Georgia,"Times New Roman",serif; background:{FUNDO}; color:
 /* Cabeçalho de página */
 .ph {{
   background:{VERDE};
-  padding:14px 18mm;
-  display:flex; align-items:center; gap:16px;
+  padding:10px 18mm 10px;
+  display:flex; align-items:center; gap:18px;
   margin-bottom:22px;
 }}
 .ph-logo {{
-  width:56px; height:56px; flex-shrink:0;
-  background:rgba(250,248,243,.08); border-radius:50%;
+  width:80px; height:80px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
-  overflow:hidden;
 }}
 .ph-logo img {{ width:100%; height:100%; object-fit:contain; }}
-.ph-divider {{ width:1px; height:44px; background:rgba(250,248,243,.2); flex-shrink:0; }}
+.ph-divider {{ width:1px; height:60px; background:rgba(250,248,243,.2); flex-shrink:0; }}
 .ph-text {{ flex:1; }}
 .ph-eye   {{
   font-family:"Courier New",monospace; font-size:7.5px;
@@ -255,11 +253,8 @@ body {{ font-family: Georgia,"Times New Roman",serif; background:{FUNDO}; color:
   display:flex; flex-direction:column; align-items:center;
 }}
 .kh-logo {{
-  width:90px; height:90px;
+  width:140px; height:140px;
   margin-bottom:14px;
-  background:rgba(250,248,243,.06);
-  border-radius:50%; overflow:hidden;
-  border:1px solid rgba(184,154,74,.3);
   display:flex; align-items:center; justify-content:center;
 }}
 .kh-logo img {{ width:100%; height:100%; object-fit:contain; }}
